@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+binaryData:
+  private_key: MmQyMjhmMjllNDlkMjcyOWM0MWYwMGFjZTQzYmM5MGM2OWU2MDJiMTU4NjNkNDYxYzRiZmFkYjZhNjU0ZTQwNw==
+data:
+  node_address: eaa32f28b55c27e443d49c6aec7e01087da27d9c
+  validator_address: eaa32f28b55c27e443d49c6aec7e01087da27d9c
+metadata:
+  labels:
+    app.kubernetes.io/chain-name: sla-bft
+    app.kubernetes.io/chain-node: sla-bft-node1
+  name: sla-bft-node1-account
