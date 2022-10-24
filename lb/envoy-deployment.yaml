@@ -118,6 +118,9 @@ data:
                                 prefix: "/"
                               route:
                                 cluster: service_controller
+                          retry_policy:
+                            retry_on: "5xx"
+                            num_retries: 5
         - name: executor_listener
           address:
             socket_address:
@@ -149,7 +152,9 @@ data:
                                 prefix: "/"
                               route:
                                 cluster: service_executor
-
+                          retry_policy:
+                            retry_on: "5xx"
+                            num_retries: 5
       clusters:
         - name: service_controller
           type: STRICT_DNS
@@ -165,6 +170,14 @@ data:
                         socket_address:
                           address: ${CHAIN_NAME}-controller
                           port_value: 50004
+          health_checks:
+          - grpc_health_check:
+              service_name: Health
+            unhealthy_threshold : 1
+            healthy_threshold: 1
+            timeout: 0.5s
+            interval: 0.5s
+            interval_jitter: 0.5s
         - name: service_executor
           type: STRICT_DNS
           dns_lookup_family: V4_ONLY
@@ -179,3 +192,11 @@ data:
                         socket_address:
                           address: ${CHAIN_NAME}-executor
                           port_value: 50002
+          health_checks:
+          - grpc_health_check:
+              service_name: Health
+            unhealthy_threshold : 1
+            healthy_threshold: 1
+            timeout: 0.5s
+            interval: 0.5s
+            interval_jitter: 0.5s
