@@ -75,6 +75,16 @@ kubectl apply -f ${CHAIN_NAME}-node4/yamls/ -n ${NAME_SPACE}
 
 ### 部署节点负载均衡
 
+```bash
+# 提前设置好 CHAIN_NAME/NAME_SPACE 环境变量
+envsubst < lb/envoy-deployment.yaml | kubectl apply -n ${NAME_SPACE} -f -
+```
+
+负载均衡暴露到`${NAME_SPACE}`命名空间下，名为`${CHAIN_NAME}-envoy`的SVC，端口有：
+* 60004 - 链的RPC端口
+* 60002 - 链的Call端口
+* 9901  - envoy的管理端口
+
 ### 部署缓存服务
 
 ## 常规测试
