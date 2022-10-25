@@ -87,6 +87,13 @@ envsubst < lb/envoy-deployment.yaml | kubectl apply -n ${NAME_SPACE} -f -
 
 ### 部署缓存服务
 
+```bash
+# 提前设置好 CHAIN_NAME/NAME_SPACE/SC/RELEASE_VERSION 环境变量
+envsubst < cache/cache-deployment.yaml | kubectl apply -n ${NAME_SPACE} -f -
+```
+
+缓存服务的端口暴露到`${NAME_SPACE}`命名空间下，名为`${CHAIN_NAME}-cache`的SVC，端口是8000。
+
 ## 常规测试
 
 ### 部署测试
