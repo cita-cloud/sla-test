@@ -98,6 +98,13 @@ envsubst < cache/cache-deployment.yaml | kubectl apply -n ${NAME_SPACE} -f -
 
 ### 部署测试
 
+```bash
+# 提前设置好 CHAIN_NAME/NAME_SPACE/SC/RELEASE_VERSION 环境变量
+envsubst < client/client-deployment.yaml | kubectl apply -n ${NAME_SPACE} -f -
+```
+
+采集结果的端口暴露到`${NAME_SPACE}`命名空间下，名为`${CHAIN_NAME}-sla-test-client`的SVC，端口是61616。
+
 ### 查看结果
 
 ## 运维测试
