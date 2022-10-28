@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  config.toml: |+
+  client.toml: |+
     sender_interval = 30
     checker_interval = 10
     storage_path = "record_db"
-    cache_url = "http://${CHAIN_NAME}-cache:8000"
-    metrics_port: 61616
+    log_file = "/data/log/client-log4rs.yaml"
+    cache_url = "http://${CHAIN_NAME}:8000"
+    metrics_port = 61616
     # Be consistent with data_for_send.block_count
     check_timeout = 20
     data_for_send = [
@@ -65,8 +66,10 @@ spec:
       containers:
         - command:
             - client
+            - -c
+            - /data/config/client.toml
           name: sla-test-client
-          image: "docker.io/citacloud/sla-test-client:v0.1.1"
+          image: "docker.io/citacloud/sla-test-client:v0.1.2"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 61616
@@ -81,7 +84,11 @@ spec:
               memory: 32Mi
           volumeMounts:
             - mountPath: /data
+              name: datadir
+            - mountPath: /data/config
               name: sla-test-client-config
+            - mountPath: /data/log
+              name: sla-test-client-log
           workingDir: /data
       volumes:
         - configMap:
