@@ -289,4 +289,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: nfs-client
+      storageClassName: ceph-filesystem
