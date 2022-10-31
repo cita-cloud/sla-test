@@ -1,4 +1,4 @@
-account = 'eaa32f28b55c27e443d49c6aec7e01087da27d9c'
+account = '8f4a1df62be9ebb8ae07ba22a25808cd4ad89fb1'
 enable_metrics = true
 log_level = 'info'
 network_listen_port = 40000

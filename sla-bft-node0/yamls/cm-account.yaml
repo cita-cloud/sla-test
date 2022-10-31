@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 binaryData:
-  private_key: MTc1MWE1YWQ4NjRiMjdmNDM1NmYxNzE4N2ZlMDNiZGFlZjBlM2Y5YjNkNjU3OTlhNjBjNTAwYWFlYTc3ZmMwNA==
+  private_key: MzJiZmQyODg3OGJjY2U0OGIwZWI1N2EyNjg4ODQ2OTAzODk0NmY3Y2RmNmViODE4NWMxNjA4ZWEzMDNiZGRiMQ==
 data:
-  node_address: a846353e9a316ef97107bb9b01dba562e4ef99fb
-  validator_address: a846353e9a316ef97107bb9b01dba562e4ef99fb
+  node_address: 62d600c7f68e8d239350e37c515abd565cded2cf
+  validator_address: 62d600c7f68e8d239350e37c515abd565cded2cf
 metadata:
   labels:
     app.kubernetes.io/chain-name: sla-bft
