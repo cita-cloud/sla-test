@@ -6,7 +6,7 @@ data:
     checker_interval = 10
     storage_path = "record_db"
     log_file = "/data/log/client-log4rs.yaml"
-    cache_url = "http://${CHAIN_NAME}:8000"
+    cache_url = "http://${CHAIN_NAME}-cache:8000"
     metrics_port = 61616
     # Be consistent with data_for_send.block_count
     check_timeout = 20
