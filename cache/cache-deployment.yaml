@@ -52,6 +52,7 @@ data:
     timing_batch = 100
     account = "757ca1c731a3d7e9bdbd0e22ee65918674a77bd7"
     log_level = "normal"
+    expire_time = 60
 metadata:
   name: ${CHAIN_NAME}-cache-config
 
