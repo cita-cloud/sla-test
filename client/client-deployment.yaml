@@ -44,7 +44,7 @@ spec:
       protocol: TCP
       targetPort: 61616
   selector:
-    app.kubernetes.io/name: sla-test-client
+    app.kubernetes.io/name: ${CHAIN_NAME}-sla-test-client
   type: ClusterIP
 
 ---
