@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding:utf-8 -*-
-# pylint: disable=missing-docstring
 import argparse
 
 from kubernetes import client, config
@@ -9,7 +7,7 @@ from logger import logger
 from util import wait_job_complete, get_env
 
 
-class Backup(object):
+class BlockHeightFallback(object):
     def __init__(self, name, namespace):
         config.load_kube_config()
         self.api = client.CustomObjectsApi()
@@ -17,22 +15,21 @@ class Backup(object):
         self.namespace = namespace
         self.created = False
 
-    def create(self, chain, node, storage_class, image,
+    def create(self, chain, node, block_height,
                deploy_method="cloud-config",
-               action="StopAndStart",
+               image="registry.devops.rivtower.com/cita-cloud/cita-node-job:latest",
                pull_policy="IfNotPresent",
-               ttl=300,
+               ttl=30,
                pod_affinity_flag=True):
         resource_body = {
             "apiVersion": "citacloud.rivtower.com/v1",
-            "kind": "Backup",
+            "kind": "BlockHeightFallback",
             "metadata": {"name": self.name},
             "spec": {
                 "chain": chain,
                 "node": node,
+                "blockHeight": block_height,
                 "deployMethod": deploy_method,
-                "storageClass": storage_class,
-                "action": action,
                 "pullPolicy": pull_policy,
                 "image": image,
                 "ttlSecondsAfterFinished": ttl,
@@ -44,13 +41,13 @@ class Backup(object):
             group="citacloud.rivtower.com",
             version="v1",
             namespace=self.namespace,
-            plural="backups",
+            plural="blockheightfallbacks",
             body=resource_body,
         )
         self.created = True
 
     def wait_job_complete(self):
-        return wait_job_complete("backups", self.name, self.namespace)
+        return wait_job_complete("blockheightfallbacks", self.name, self.namespace)
 
     def delete(self):
         self.api.delete_namespaced_custom_object(
@@ -58,35 +55,37 @@ class Backup(object):
             version="v1",
             name=self.name,
             namespace=self.namespace,
-            plural="backups",
+            plural="blockheightfallbacks",
             body=client.V1DeleteOptions(),
         )
 
 
-if __name__ == "__main__":
-    chain_name, namespace, sc, docker_registry, docker_repo = get_env()
+if __name__ == '__main__':
+    chain_name, namespace, _, docker_registry, docker_repo = get_env()
 
-    parser = argparse.ArgumentParser(description='Perform backup for chain node')
+    parser = argparse.ArgumentParser(description='Perform block height fallback for chain node')
+    parser.add_argument('--block_height', '-b', help='block height number', required=True, type=int)
     parser.add_argument('--node_domain', '-n', help="the node's domain name", required=True, type=str)
     parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.3", type=str)
     parser.add_argument('--pull_policy', '-p', help="image pull policy", default="Always", type=str,
                         choices=['Always', 'IfNotPresent'])
     args = parser.parse_args()
 
-    backup = Backup(name="{}-backup".format(chain_name), namespace=namespace)
+    bhf = BlockHeightFallback(name="{}-bhf".format(chain_name), namespace=namespace)
     try:
-        # create backup job
         node = "{}-{}".format(chain_name, args.node_domain)
-        logger.info("create backup job -> [chain: {}, node: {}]...".format(chain_name, node))
-        backup.create(chain=chain_name,
-                      node=node,
-                      storage_class=sc,
-                      image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
-                      pull_policy=args.pull_policy)
-        status = backup.wait_job_complete()
+        logger.info(
+            "create fallback job for [chain: {}, node: {}, expected block height: {}]...".format(chain_name, node,
+                                                                                                 args.block_height))
+        bhf.create(chain=chain_name,
+                   node=node,
+                   block_height=args.block_height,
+                   image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
+                   pull_policy=args.pull_policy)
+        status = bhf.wait_job_complete()
         if status == "Failed":
-            raise Exception("backup exec failed")
-        logger.info("the backup job has been completed")
+            raise Exception("block height fallback exec failed")
+        logger.info("the fallback job has been completed")
     except Exception as e:
         logger.exception(e)
-        exit(10)
+        exit(20)

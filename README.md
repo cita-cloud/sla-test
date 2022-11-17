@@ -115,25 +115,45 @@ envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 ### 备份节点数据
 
-```bash
+```shell
 # 提前设置好 CHAIN_NAME/NAME_SPACE/SC/DOCKER_REGISTRY/DOCKER_REPO 环境变量
-python3 ./script/backup.py
+python3 ./script/backup.py -n node0
 ```
 
 ### 从备份恢复节点数据
 
-```bash
+```shell
 # 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
-python3 ./script/restore.py
+python3 ./script/restore.py -n node0 -m backup
 ```
 
 ### 消块
 
+```shell
+# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+python3 ./script/block_height_fallback.py -n node0 -b 100
+```
+
 ### 快照
+
+```shell
+# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+python3 ./script/snapshot.py -n node0 -b 200
+```
 
 ### 从快照恢复节点数据
 
+```shell
+# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+python3 ./script/restore.py -n node0 -m snapshot
+```
+
 ### 守护节点切换
+
+```bash
+# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+python3 ./script/swithover.py -s node0 -d node1
+```
 
 ### 增加只读节点
 
