@@ -57,6 +57,8 @@ data:
     account = "757ca1c731a3d7e9bdbd0e22ee65918674a77bd7"
     log_level = "normal"
     expire_time = 60
+    rough_internal = 10
+    crypto_type = "SM"
 metadata:
   name: ${CHAIN_NAME}-cache-config
 
@@ -103,44 +105,6 @@ spec:
     spec:
       containers:
         - command:
-          - crypto
-          - run
-          - -c
-          - /etc/cita-cloud/config/config.toml
-          - -l
-          - /etc/cita-cloud/log/crypto-log4rs.yaml
-          - -p
-          - /mnt/private_key
-          image: "docker.io/citacloud/crypto_sm:${RELEASE_VERSION}"
-          imagePullPolicy: IfNotPresent
-          livenessProbe:
-            exec:
-              command:
-                - grpc_health_probe
-                - "-addr=127.0.0.1:50005"
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          name: crypto
-          ports:
-            - containerPort: 50005
-              name: grpc
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 4000m
-              memory: 8192Mi
-            requests:
-              cpu: 10m
-              memory: 32Mi
-          volumeMounts:
-            - mountPath: /etc/cita-cloud/config
-              name: crypto-config
-            - mountPath: /etc/cita-cloud/log
-              name: crypto-log
-            - mountPath: /mnt
-              name: crypto-account
-          workingDir: /data
-        - command:
             - redis-server
             - "/redis-config/redis.conf"
           name: redis
@@ -150,7 +114,11 @@ spec:
             - containerPort: 6379
           resources:
             limits:
-              cpu: "0.1"
+              cpu: 4000m
+              memory: 8192Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
           volumeMounts:
             - mountPath: /data
               name: datadir
@@ -160,9 +128,9 @@ spec:
         - command:
             - /bin/sh
             - "-c"
-            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
+            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=512 ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
           name: cache
-          image: "docker.io/citacloud/cache:v0.2.0"
+          image: "docker.io/citacloud/cache:v0.1.5"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
