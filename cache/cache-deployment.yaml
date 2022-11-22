@@ -58,6 +58,7 @@ data:
     log_level = "normal"
     expire_time = 60
     rough_internal = 10
+    crypto_type = "SM"
 metadata:
   name: ${CHAIN_NAME}-cache-config
 
@@ -103,44 +104,6 @@ spec:
         app.kubernetes.io/name: ${CHAIN_NAME}-cache
     spec:
       containers:
-        - command:
-          - crypto
-          - run
-          - -c
-          - /etc/cita-cloud/config/config.toml
-          - -l
-          - /etc/cita-cloud/log/crypto-log4rs.yaml
-          - -p
-          - /mnt/private_key
-          image: "docker.io/citacloud/crypto_sm:${RELEASE_VERSION}"
-          imagePullPolicy: IfNotPresent
-          livenessProbe:
-            exec:
-              command:
-                - grpc_health_probe
-                - "-addr=127.0.0.1:50005"
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          name: crypto
-          ports:
-            - containerPort: 50005
-              name: grpc
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 4000m
-              memory: 8192Mi
-            requests:
-              cpu: 10m
-              memory: 32Mi
-          volumeMounts:
-            - mountPath: /etc/cita-cloud/config
-              name: crypto-config
-            - mountPath: /etc/cita-cloud/log
-              name: crypto-log
-            - mountPath: /mnt
-              name: crypto-account
-          workingDir: /data
         - command:
             - redis-server
             - "/redis-config/redis.conf"
