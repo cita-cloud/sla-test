@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-# -*- coding:utf-8 -*-
-# pylint: disable=missing-docstring
+import argparse
 
-import os
-from pprint import pprint
 from kubernetes import client, config
-from util import wait_job_complete
+
+from logger import logger
+from util import wait_job_complete, get_env
 
 
 class Restore(object):
@@ -97,21 +96,45 @@ class Restore(object):
 
 
 if __name__ == "__main__":
-    chain_name = os.getenv("CHAIN_NAME")
-    namespace = os.getenv("NAME_SPACE")
-    docker_registry = os.getenv("DOCKER_REGISTRY")
-    docker_repo = os.getenv("DOCKER_REPO")
+    chain_name, namespace, _, docker_registry, docker_repo = get_env()
 
-    restore = Restore(name = "{}-restore".format(chain_name), namespace = namespace)
+    parser = argparse.ArgumentParser(description='Perform restore for chain node')
+    parser.add_argument('--method', '-m', help='restore from', required=True, type=str,
+                        choices=['backup', 'snapshot'])
+    parser.add_argument('--node_domain', '-n', help="the node's domain name", required=True, type=str)
+    parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.3", type=str)
+    parser.add_argument('--pull_policy', '-p', help="image pull policy", default="Always", type=str,
+                        choices=['Always', 'IfNotPresent'])
+    args = parser.parse_args()
+
+    restore = Restore(name="{}-restore".format(chain_name), namespace=namespace)
     try:
-        # create resotre job
-        restore.create_for_backup(chain = chain_name,
-                      node = "{}-node3".format(chain_name),
-                      backup = "{}-backup".format(chain_name),
-                      image = "{}/{}/cita-node-job:v0.0.2".format(docker_registry, docker_repo))
+        node = "{}-{}".format(chain_name, args.node_domain)
+        if args.method == "backup":
+            # create restore job for backup
+            logger.info(
+                "create restore job -> [chain: {}, node: {}, restore from: {}]...".format(chain_name, node,
+                                                                                          args.method))
+            restore.create_for_backup(chain=chain_name,
+                                      node=node,
+                                      backup="{}-backup".format(chain_name),
+                                      image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
+                                      pull_policy=args.pull_policy)
+        elif args.method == "snapshot":
+            # create restore job for snapshot
+            logger.info("create restore job -> [chain: {}, node: {}, restore from: {}]...".format(chain_name, node,
+                                                                                                  args.method))
+            restore.create_for_snapshot(chain=chain_name,
+                                        node=node,
+                                        snapshot="{}-snapshot".format(chain_name),
+                                        image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
+                                        pull_policy=args.pull_policy)
+        else:
+            raise Exception("invalid restore method")
         status = restore.wait_job_complete()
         if status == "Failed":
-            raise Exception("backup exec failed")
+            raise Exception("restore exec failed")
+        logger.info("the restore job for {} has been completed".format(args.method))
     except Exception as e:
-        pprint(e)
+        logger.exception(e)
         exit(10)
