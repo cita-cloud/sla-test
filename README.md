@@ -113,6 +113,16 @@ envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 采用通用的底链升级策略，视具体版本的情况，可能需要一些额外的变更操作。
 
+升级配置：
+
+```bash
+# 设置要升级的新版本版本号
+export RELEASE_VERSION=v6.6.2
+bash -x ./upgrade/upgrade.sh
+```
+
+然后重新部署即可。
+
 ### 备份节点数据
 
 ```bash
