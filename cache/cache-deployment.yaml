@@ -57,6 +57,7 @@ data:
     account = "757ca1c731a3d7e9bdbd0e22ee65918674a77bd7"
     log_level = "normal"
     expire_time = 60
+    rough_internal = 10
 metadata:
   name: ${CHAIN_NAME}-cache-config
 
@@ -150,7 +151,11 @@ spec:
             - containerPort: 6379
           resources:
             limits:
-              cpu: "0.1"
+              cpu: 4000m
+              memory: 8192Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
           volumeMounts:
             - mountPath: /data
               name: datadir
@@ -160,9 +165,9 @@ spec:
         - command:
             - /bin/sh
             - "-c"
-            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
+            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=512 ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
           name: cache
-          image: "docker.io/citacloud/cache:v0.2.0"
+          image: "docker.io/citacloud/cache:v0.1.5"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
