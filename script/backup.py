@@ -46,6 +46,7 @@ class Backup(object):
             namespace=self.namespace,
             plural="backups",
             body=resource_body,
+            _request_timeout=30,
         )
         self.created = True
 
@@ -60,6 +61,7 @@ class Backup(object):
             namespace=self.namespace,
             plural="backups",
             body=client.V1DeleteOptions(),
+            _request_timeout=30,
         )
 
 

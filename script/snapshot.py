@@ -45,6 +45,7 @@ class Snapshot(object):
             namespace=self.namespace,
             plural="snapshots",
             body=resource_body,
+            _request_timeout=30,
         )
         self.created = True
 
@@ -59,6 +60,7 @@ class Snapshot(object):
             namespace=self.namespace,
             plural="snapshots",
             body=client.V1DeleteOptions(),
+            _request_timeout=30,
         )
 
 

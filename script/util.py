@@ -19,6 +19,7 @@ def wait_job_complete(crd, cr_name, namespace):
         name=cr_name,
         namespace=namespace,
         plural=crd,
+        _request_timeout=30,
     )
     if not resource.get('status'):
         raise Exception("no status")

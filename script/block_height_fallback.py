@@ -43,6 +43,7 @@ class BlockHeightFallback(object):
             namespace=self.namespace,
             plural="blockheightfallbacks",
             body=resource_body,
+            _request_timeout=30,
         )
         self.created = True
 
@@ -57,6 +58,7 @@ class BlockHeightFallback(object):
             namespace=self.namespace,
             plural="blockheightfallbacks",
             body=client.V1DeleteOptions(),
+            _request_timeout=30,
         )
 
 

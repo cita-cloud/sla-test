@@ -78,6 +78,7 @@ class Restore(object):
             namespace=self.namespace,
             plural="restores",
             body=resource_body,
+            _request_timeout=30,
         )
         self.created = True
 
@@ -92,6 +93,7 @@ class Restore(object):
             namespace=self.namespace,
             plural="restores",
             body=client.V1DeleteOptions(),
+            _request_timeout=30,
         )
 
 

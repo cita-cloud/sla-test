@@ -39,6 +39,7 @@ class Switchover(object):
             namespace=self.namespace,
             plural="switchovers",
             body=resource_body,
+            _request_timeout=30,
         )
         self.created = True
 
@@ -50,6 +51,7 @@ class Switchover(object):
             namespace=self.namespace,
             plural="switchovers",
             body=client.V1DeleteOptions(),
+            _request_timeout=30,
         )
 
     def wait_job_complete(self):
