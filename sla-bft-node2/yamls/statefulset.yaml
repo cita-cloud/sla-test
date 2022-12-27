@@ -38,7 +38,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -l
         - /etc/cita-cloud/log/network-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -79,7 +79,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -l
         - /etc/cita-cloud/log/consensus-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/consensus_bft:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/consensus_bft:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -117,7 +117,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -l
         - /etc/cita-cloud/log/executor-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -153,7 +153,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -l
         - /etc/cita-cloud/log/storage-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/storage_rocksdb:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/storage_rocksdb:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -189,7 +189,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -l
         - /etc/cita-cloud/log/controller-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/controller:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/controller:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -229,7 +229,7 @@ spec:
         - /etc/cita-cloud/log/crypto-log4rs.yaml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/crypto_sm:v6.6.2
+        image: registry.devops.rivtower.com/cita-cloud/crypto_sm:v6.6.3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
