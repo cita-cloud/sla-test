@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  config.toml: |+
+    [network_zenoh]
+    ca_cert = """
+    -----BEGIN CERTIFICATE-----\r
+    MIIBaDCCAQ6gAwIBAgIIaQi1Lu35+kcwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
+    MDAwMDBaMB8xEDAOBgNVBAoMB0NJVEFIdWIxCzAJBgNVBAMTAkNBMFkwEwYHKoZI\r
+    zj0CAQYIKoZIzj0DAQcDQgAEAcsJEDnds2qUfGSr1/4g4aDQorcKSAO2/U1zN4R/\r
+    fFc3qFiFUyYIWS6Huwd7yOzUVI2OOdly4PgJWnFWFo/bfqMyMDAwHQYDVR0OBBYE\r
+    FEf6+e0utQhpBiKPZ6HWVAOPA7onMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
+    AwIDSAAwRQIhAJuN/yHBcX/hAltItbBaEBWfUjq5P8Gc+5o/Ln1BvvGoAiAwSg6X\r
+    rqBRyiZ9F4QhvEhoAf0FIB1RBDR8FTbLYuWczw==\r
+    -----END CERTIFICATE-----\r
+    """
+    cert = """
+    -----BEGIN CERTIFICATE-----\r
+    MIIBZzCCAQ2gAwIBAgIITcUp+hmHY7YwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
+    MDAwMDBaMC8xEDAOBgNVBAoMB0NJVEFIdWIxGzAZBgNVBAMTEnNsYS1vdmVybG9y\r
+    ZC1ub2RlMjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBv40ylG2hd9iNLMw3ZE\r
+    TyJhjbNPy5oGNr3kW0KTHI31cJYpNNhHUUByfHs60wn0jneTnmwem5G/MTMrmMfq\r
+    Jn+jITAfMB0GA1UdEQQWMBSCEnNsYS1vdmVybG9yZC1ub2RlMjAKBggqhkjOPQQD\r
+    AgNIADBFAiEA/MdGTqJtXkY17z3FVzExEIj97uLa8zaAE3FUkOSHkjkCIEF0wc/0\r
+    eIuhxYJbyI3Q1CWmfHIfYuZlBu3h3zeeEerd\r
+    -----END CERTIFICATE-----\r
+    """
+    chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
+    domain = 'sla-overlord-node2'
+    enable_metrics = true
+    grpc_port = 50000
+    metrics_port = 60000
+    node_address = '/mnt/node_address'
+    port = 40000
+    priv_key = """
+    -----BEGIN PRIVATE KEY-----\r
+    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgHVvxtzn23zpdjTfC\r
+    WnRaW28CxV5KDcTfh88y5TOmL6ShRANCAAQb+NMpRtoXfYjSzMN2RE8iYY2zT8ua\r
+    Bja95FtCkxyN9XCWKTTYR1FAcnx7OtMJ9I53k55sHpuRvzEzK5jH6iZ/\r
+    -----END PRIVATE KEY-----\r
+    """
+    protocol = 'quic'
+    validator_address = '/mnt/validator_address'
+
+    [[network_zenoh.modules]]
+    hostname = '127.0.0.1'
+    module_name = 'consensus'
+    port = 50001
+
+    [[network_zenoh.modules]]
+    hostname = '127.0.0.1'
+    module_name = 'controller'
+    port = 50004
+
+    [[network_zenoh.peers]]
+    domain = 'sla-overlord-node0'
+    port = 40000
+    protocol = 'quic'
+
+    [[network_zenoh.peers]]
+    domain = 'sla-overlord-node1'
+    port = 40000
+    protocol = 'quic'
+
+    [[network_zenoh.peers]]
+    domain = 'sla-overlord-node3'
+    port = 40000
+    protocol = 'quic'
+
+    [[network_zenoh.peers]]
+    domain = 'sla-overlord-node4'
+    port = 40000
+    protocol = 'quic'
+
+    [consensus_overlord]
+    consensus_port = 50001
+    controller_port = 50004
+    enable_metrics = true
+    metrics_port = 60001
+    network_port = 50000
+
+    [executor_evm]
+    enable_metrics = true
+    executor_port = 50002
+    metrics_port = 60002
+
+    [storage_rocksdb]
+    crypto_port = 50005
+    enable_metrics = true
+    metrics_port = 60003
+    storage_port = 50003
+
+    [genesis_block]
+    prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
+    timestamp = 1672303625944
+
+    [system_config]
+    admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+    block_interval = 3
+    block_limit = 100
+    chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
+    quota_limit = 1073741824
+    validators = [
+        'addd1a936e4c50d94108da63ab843c491a120827be12d37ad6bebab39639a47dd231df139c40180dee8a3f9acee7c5f6',
+        'a3ef601fdfff2a52e6cd735b06964d3ca955036fd10fa6f8f48dceef6538aa88e7cc7f45336b577297f98ae49b5a024d',
+        '877739e2ac26e16204a0be85daee6dd5dd1e81b2b68b9af515c3fca26662b1c7f165066466607db095a0f68798d2b605',
+        '9109cd4e80392a2c1b3f81b63dc30c5bae25e6c38f806e83e351da4fe4b2506a5c4173577a2396466789e97a0245b7ab',
+    ]
+    version = 0
+
+    [controller]
+    consensus_port = 50001
+    controller_port = 50004
+    crypto_port = 50005
+    enable_metrics = true
+    executor_port = 50002
+    metrics_port = 60004
+    network_port = 50000
+    node_address = '/mnt/node_address'
+    storage_port = 50003
+    validator_address_len = 48
+
+    [crypto_sm]
+    crypto_port = 50005
+    enable_metrics = true
+    metrics_port = 60005
+
+metadata:
+  labels:
+    app.kubernetes.io/chain-name: sla-overlord
+    app.kubernetes.io/chain-node: sla-overlord-node2
+  name: sla-overlord-node2-config
