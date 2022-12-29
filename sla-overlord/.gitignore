@@ -1,0 +1,3 @@
+accounts/*/
+ca_cert/key.pem
+certs/*/key.pem
