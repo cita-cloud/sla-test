@@ -54,6 +54,7 @@ data:
     redis_addr = "redis://default:rivtower@127.0.0.1:6379"
     timing_internal_sec = 1
     timing_batch = 400
+    account = "757ca1c731a3d7e9bdbd0e22ee65918674a77bd7"
     log_level = "normal"
     expire_time = 60
     rough_internal = 10
@@ -127,7 +128,7 @@ spec:
         - command:
             - /bin/sh
             - "-c"
-            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=512 cache"
+            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=512 ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
           name: cache
           image: "docker.io/citacloud/cache:v0.2.5"
           imagePullPolicy: IfNotPresent
