@@ -19,7 +19,7 @@ pip install kubernetes tenacity
 
 ## 部署
 
-初始版本为v6.6.1。
+当前版本为v6.6.3。
 
 ### 生成链配置
 
@@ -33,7 +33,7 @@ export DOCKER_REPO=citacloud
 # export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.6.1
+export RELEASE_VERSION=v6.6.3
 
 # 设置链的类型和名称
 export CHIAN_TYPE=bft
@@ -128,7 +128,7 @@ envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 ```bash
 # 设置要升级的新版本版本号
-export RELEASE_VERSION=v6.6.2
+export RELEASE_VERSION=v6.6.3
 bash -x ./upgrade/upgrade.sh
 ```
 
