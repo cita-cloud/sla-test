@@ -1,79 +1,79 @@
-stage = 'Finalize'
+stage = "Finalize"
 
 [[micro_service_list]]
-image = 'network_zenoh'
-tag = 'v6.6.3'
+image = "network_zenoh"
+tag = "latest"
 
 [[micro_service_list]]
-image = 'consensus_overlord'
-tag = 'v6.6.3'
+image = "consensus_overlord"
+tag = "latest"
 
 [[micro_service_list]]
-image = 'executor_evm'
-tag = 'v6.6.3'
+image = "executor_evm"
+tag = "latest"
 
 [[micro_service_list]]
-image = 'storage_rocksdb'
-tag = 'v6.6.3'
+image = "storage_rocksdb"
+tag = "latest"
 
 [[micro_service_list]]
-image = 'controller'
-tag = 'v6.6.3'
+image = "controller"
+tag = "latest"
 
 [[micro_service_list]]
-image = 'crypto_sm'
-tag = 'v6.6.3'
+image = "crypto_sm"
+tag = "latest"
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node0'
-host = 'localhost'
+cluster = "k8s"
+domain = "node0"
+host = "localhost"
 port = 40000
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node1'
-host = 'localhost'
+cluster = "k8s"
+domain = "node1"
+host = "localhost"
 port = 40001
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node2'
-host = 'localhost'
+cluster = "k8s"
+domain = "node2"
+host = "localhost"
 port = 40002
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node3'
-host = 'localhost'
+cluster = "k8s"
+domain = "node3"
+host = "localhost"
 port = 40003
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node4'
-host = 'localhost'
+cluster = "k8s"
+domain = "node4"
+host = "localhost"
 port = 40004
 svc_port = 40000
 
 [genesis_block]
-prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
-timestamp = 1672303625944
+prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+timestamp = 1676016450684
 
 [system_config]
-admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
 block_interval = 3
 block_limit = 100
-chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
+chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
 quota_limit = 1073741824
 validators = [
-    'addd1a936e4c50d94108da63ab843c491a120827be12d37ad6bebab39639a47dd231df139c40180dee8a3f9acee7c5f6',
-    'a3ef601fdfff2a52e6cd735b06964d3ca955036fd10fa6f8f48dceef6538aa88e7cc7f45336b577297f98ae49b5a024d',
-    '877739e2ac26e16204a0be85daee6dd5dd1e81b2b68b9af515c3fca26662b1c7f165066466607db095a0f68798d2b605',
-    '9109cd4e80392a2c1b3f81b63dc30c5bae25e6c38f806e83e351da4fe4b2506a5c4173577a2396466789e97a0245b7ab',
+    "a758a550207d2068015aa375061833d98ad18e0b0b43177d49466820a677a1ba01d30696122b448dbc377d49e03858c5",
+    "87a363b1ef005dba2107f2dfb7bffbae699bb077d1fe12311662c76d28baf49e719d6244b5940c3be530ed53dc96a9ff",
+    "8d1f9de564190ececc49210d6fbcabe7d0202d79b5a63374a8fe1e419b279414e9740f20d5153fb9a9daade620c86c15",
+    "a9d27b8d0e69afe3eb9162c81c5ecbf5342c1fa96a7620dc73a0a42be9324dbddf9faa5f9e6d67581f97cac0002f03fa",
 ]
 version = 0
 

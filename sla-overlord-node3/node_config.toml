@@ -1,6 +1,7 @@
-account = '38513154299fdb0eb4f4e53fe5507e6ef1f4da6e'
+account = "d5999f3639d735c75b86098d35b563d66bbafa18"
 enable_metrics = true
-log_level = 'info'
+is_danger = false
+log_level = "info"
 network_listen_port = 40000
 
 [grpc_ports]

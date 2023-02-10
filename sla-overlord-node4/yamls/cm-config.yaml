@@ -5,108 +5,131 @@ data:
     [network_zenoh]
     ca_cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBaDCCAQ6gAwIBAgIIaQi1Lu35+kcwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    MIIBaDCCAQ6gAwIBAgIIb1AHg2k8PV8wCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
     Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
     MDAwMDBaMB8xEDAOBgNVBAoMB0NJVEFIdWIxCzAJBgNVBAMTAkNBMFkwEwYHKoZI\r
-    zj0CAQYIKoZIzj0DAQcDQgAEAcsJEDnds2qUfGSr1/4g4aDQorcKSAO2/U1zN4R/\r
-    fFc3qFiFUyYIWS6Huwd7yOzUVI2OOdly4PgJWnFWFo/bfqMyMDAwHQYDVR0OBBYE\r
-    FEf6+e0utQhpBiKPZ6HWVAOPA7onMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
-    AwIDSAAwRQIhAJuN/yHBcX/hAltItbBaEBWfUjq5P8Gc+5o/Ln1BvvGoAiAwSg6X\r
-    rqBRyiZ9F4QhvEhoAf0FIB1RBDR8FTbLYuWczw==\r
+    zj0CAQYIKoZIzj0DAQcDQgAEG37LGe8qyqo7GHXGpxYnmzNoeRHq2q5zaA9ZA0Sh\r
+    wDnpETBsJRRmSUVCK8sdDYXmPLy0DZBN0BMJsKeT2NDwz6MyMDAwHQYDVR0OBBYE\r
+    FF89PGmDB1BvoVK07OT+nZXCBWczMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
+    AwIDSAAwRQIgd8HdvFrjKF/IUpT48gEBQCKz43/FLF4SHMRhOgGHjW4CIQC7SWDN\r
+    OZp4y3DBIgSq6eVVNSeMQbFETaeO+ZYewGxNAg==\r
     -----END CERTIFICATE-----\r
     """
     cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBaDCCAQ6gAwIBAgIJAM5MvOI+U4ZgMAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
-    B0NJVEFIdWIxCzAJBgNVBAMTAkNBMCAXDTc1MDEwMTAwMDAwMFoYDzQwOTYwMTAx\r
-    MDAwMDAwWjAvMRAwDgYDVQQKDAdDSVRBSHViMRswGQYDVQQDExJzbGEtb3Zlcmxv\r
-    cmQtbm9kZTQwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR3uOxTcVnAN8llePxM\r
-    dtyGoUcp036I3F5fhbzogGL32X5gNpH+U9f9SyTpjBrwM/LKMEwBtY6u9L5Y//p2\r
-    UE2koyEwHzAdBgNVHREEFjAUghJzbGEtb3ZlcmxvcmQtbm9kZTQwCgYIKoZIzj0E\r
-    AwIDSAAwRQIgZU5YILM4G9DELlcj2KUM+SPhqPlM9EjpvJaqJNCb2lQCIQCfk6eF\r
-    KTwTgAOql9jAayH2CvHNvLepteLgB0zVJ3UmeA==\r
+    MIIBZzCCAQ2gAwIBAgIIQu7ymthSefswCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
+    MDAwMDBaMC8xEDAOBgNVBAoMB0NJVEFIdWIxGzAZBgNVBAMTEnNsYS1vdmVybG9y\r
+    ZC1ub2RlNDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIuM3HOvbTqJ15SFclYS\r
+    okgd7TF4IzrGDnSeIKGC+gLXUlUWEy1cPAH6orylw477+ImaR2LyKa0TZd/BUccn\r
+    1rOjITAfMB0GA1UdEQQWMBSCEnNsYS1vdmVybG9yZC1ub2RlNDAKBggqhkjOPQQD\r
+    AgNIADBFAiA6nUGZk5klXVFnjBTgrPxiP+pLPtZLhG37+xi3nmSMRAIhAOtHzKxK\r
+    n84xNOP3JmC1nYkUX2INfbU+b5nAuSeQ+qEd\r
     -----END CERTIFICATE-----\r
     """
-    chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
-    domain = 'sla-overlord-node4'
+    chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
+    domain = "sla-overlord-node4"
     enable_metrics = true
     grpc_port = 50000
     metrics_port = 60000
-    node_address = '/mnt/node_address'
+    node_address = "/mnt/node_address"
     port = 40000
     priv_key = """
     -----BEGIN PRIVATE KEY-----\r
-    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgtrtmO1RdESlhOe5W\r
-    PriJmENnZDyYTiriJyEFz63u1AWhRANCAAR3uOxTcVnAN8llePxMdtyGoUcp036I\r
-    3F5fhbzogGL32X5gNpH+U9f9SyTpjBrwM/LKMEwBtY6u9L5Y//p2UE2k\r
+    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg5itZwVai3wjMb6In\r
+    YJOEZ50v9OZ3hRGz8mlkAAU2I5WhRANCAASLjNxzr206ideUhXJWEqJIHe0xeCM6\r
+    xg50niChgvoC11JVFhMtXDwB+qK8pcOO+/iJmkdi8imtE2XfwVHHJ9az\r
     -----END PRIVATE KEY-----\r
     """
-    protocol = 'quic'
-    validator_address = '/mnt/validator_address'
+    protocol = "quic"
+    validator_address = "/mnt/validator_address"
 
     [[network_zenoh.modules]]
-    hostname = '127.0.0.1'
-    module_name = 'consensus'
+    hostname = "127.0.0.1"
+    module_name = "consensus"
     port = 50001
 
     [[network_zenoh.modules]]
-    hostname = '127.0.0.1'
-    module_name = 'controller'
+    hostname = "127.0.0.1"
+    module_name = "controller"
     port = 50004
 
     [[network_zenoh.peers]]
-    domain = 'sla-overlord-node0'
+    domain = "sla-overlord-node0"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
 
     [[network_zenoh.peers]]
-    domain = 'sla-overlord-node1'
+    domain = "sla-overlord-node1"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
 
     [[network_zenoh.peers]]
-    domain = 'sla-overlord-node2'
+    domain = "sla-overlord-node2"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
 
     [[network_zenoh.peers]]
-    domain = 'sla-overlord-node3'
+    domain = "sla-overlord-node3"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
+
+    [network_zenoh.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "network"
 
     [consensus_overlord]
     consensus_port = 50001
     controller_port = 50004
+    domain = "sla-overlord-node4"
     enable_metrics = true
     metrics_port = 60001
     network_port = 50000
 
+    [consensus_overlord.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "consensus"
+
     [executor_evm]
+    domain = "sla-overlord-node4"
     enable_metrics = true
     executor_port = 50002
     metrics_port = 60002
 
+    [executor_evm.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "executor"
+
     [storage_rocksdb]
     crypto_port = 50005
+    domain = "sla-overlord-node4"
     enable_metrics = true
     metrics_port = 60003
     storage_port = 50003
 
+    [storage_rocksdb.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "storage"
+
     [genesis_block]
-    prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
-    timestamp = 1672303625944
+    prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    timestamp = 1676016450684
 
     [system_config]
-    admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+    admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
     block_interval = 3
     block_limit = 100
-    chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
+    chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
     quota_limit = 1073741824
     validators = [
-        'addd1a936e4c50d94108da63ab843c491a120827be12d37ad6bebab39639a47dd231df139c40180dee8a3f9acee7c5f6',
-        'a3ef601fdfff2a52e6cd735b06964d3ca955036fd10fa6f8f48dceef6538aa88e7cc7f45336b577297f98ae49b5a024d',
-        '877739e2ac26e16204a0be85daee6dd5dd1e81b2b68b9af515c3fca26662b1c7f165066466607db095a0f68798d2b605',
-        '9109cd4e80392a2c1b3f81b63dc30c5bae25e6c38f806e83e351da4fe4b2506a5c4173577a2396466789e97a0245b7ab',
+        "a758a550207d2068015aa375061833d98ad18e0b0b43177d49466820a677a1ba01d30696122b448dbc377d49e03858c5",
+        "87a363b1ef005dba2107f2dfb7bffbae699bb077d1fe12311662c76d28baf49e719d6244b5940c3be530ed53dc96a9ff",
+        "8d1f9de564190ececc49210d6fbcabe7d0202d79b5a63374a8fe1e419b279414e9740f20d5153fb9a9daade620c86c15",
+        "a9d27b8d0e69afe3eb9162c81c5ecbf5342c1fa96a7620dc73a0a42be9324dbddf9faa5f9e6d67581f97cac0002f03fa",
     ]
     version = 0
 
@@ -114,18 +137,31 @@ data:
     consensus_port = 50001
     controller_port = 50004
     crypto_port = 50005
+    domain = "sla-overlord-node4"
     enable_metrics = true
     executor_port = 50002
+    is_danger = false
     metrics_port = 60004
     network_port = 50000
-    node_address = '/mnt/node_address'
+    node_address = "/mnt/node_address"
     storage_port = 50003
-    validator_address_len = 48
+    validator_address = "/mnt/validator_address"
+
+    [controller.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "controller"
 
     [crypto_sm]
     crypto_port = 50005
+    domain = "sla-overlord-node4"
     enable_metrics = true
     metrics_port = 60005
+
+    [crypto_sm.log_config]
+    filter = "info"
+    max_level = "info"
+    service_name = "crypto"
 
 metadata:
   labels:
