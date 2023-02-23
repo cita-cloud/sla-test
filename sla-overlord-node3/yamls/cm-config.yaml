@@ -5,26 +5,26 @@ data:
     [network_zenoh]
     ca_cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBaDCCAQ6gAwIBAgIIb1AHg2k8PV8wCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    MIIBZzCCAQ6gAwIBAgIIYbDhARtcH30wCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
     Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
     MDAwMDBaMB8xEDAOBgNVBAoMB0NJVEFIdWIxCzAJBgNVBAMTAkNBMFkwEwYHKoZI\r
-    zj0CAQYIKoZIzj0DAQcDQgAEG37LGe8qyqo7GHXGpxYnmzNoeRHq2q5zaA9ZA0Sh\r
-    wDnpETBsJRRmSUVCK8sdDYXmPLy0DZBN0BMJsKeT2NDwz6MyMDAwHQYDVR0OBBYE\r
-    FF89PGmDB1BvoVK07OT+nZXCBWczMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
-    AwIDSAAwRQIgd8HdvFrjKF/IUpT48gEBQCKz43/FLF4SHMRhOgGHjW4CIQC7SWDN\r
-    OZp4y3DBIgSq6eVVNSeMQbFETaeO+ZYewGxNAg==\r
+    zj0CAQYIKoZIzj0DAQcDQgAE6KklnxT7ovUXCQHube9spKXe+RPW7SBVXyWiQKSA\r
+    j6PaRGC6Mnx8vwg4hu0M9aHLT3o5UW66ySyOawrwQiQIP6MyMDAwHQYDVR0OBBYE\r
+    FH0fXBsB4bBhaFkC7kCRkGNOX5RgMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
+    AwIDRwAwRAIgErCy1bfz4xh8RGZ43VzOZRsJGiR0b5C2aivOhBtFR98CIDOoY794\r
+    azqy9Jzfc0iJbXN4hzUzYBWgpNWfID9bNdLO\r
     -----END CERTIFICATE-----\r
     """
     cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBaDCCAQ6gAwIBAgIJANbuJToAgnhBMAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
-    B0NJVEFIdWIxCzAJBgNVBAMTAkNBMCAXDTc1MDEwMTAwMDAwMFoYDzQwOTYwMTAx\r
-    MDAwMDAwWjAvMRAwDgYDVQQKDAdDSVRBSHViMRswGQYDVQQDExJzbGEtb3Zlcmxv\r
-    cmQtbm9kZTMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQLVzKMxW7PKC5bajON\r
-    fa9mv2BpMWO5+u9VXips3R9SfoR40ipND3AnJwUVQrD+F/mmfW4LBDnbheBCPGdG\r
-    AQ8OoyEwHzAdBgNVHREEFjAUghJzbGEtb3ZlcmxvcmQtbm9kZTMwCgYIKoZIzj0E\r
-    AwIDSAAwRQIgExka+c0ymQzrhLYcw5V8CIB8gwUX0ctilpD334yKw8QCIQDF8OWt\r
-    xaEF0y7W3qfQY8ZaCB3JIk9umfFWeAyvcPQVIg==\r
+    MIIBZzCCAQ2gAwIBAgIIF2n0m6JfR5QwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+    Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
+    MDAwMDBaMC8xEDAOBgNVBAoMB0NJVEFIdWIxGzAZBgNVBAMTEnNsYS1vdmVybG9y\r
+    ZC1ub2RlMzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJ7tmBRJuMmH7x3eIffE\r
+    oHuX4dpu15us+gwy4AxAhuslh26RsaNCiMI9ae7iA3IJLoaE2qqofWwT4fbfRvYS\r
+    C3ejITAfMB0GA1UdEQQWMBSCEnNsYS1vdmVybG9yZC1ub2RlMzAKBggqhkjOPQQD\r
+    AgNIADBFAiBh0UVW4dLXVq1NXduFQFs7v5XYHIEzSrNnNuQc3HKW1AIhAKDupRvV\r
+    6LnD4j84FMiJwD4SeniejT0LWVQtWVcE/pl8\r
     -----END CERTIFICATE-----\r
     """
     chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
@@ -36,9 +36,9 @@ data:
     port = 40000
     priv_key = """
     -----BEGIN PRIVATE KEY-----\r
-    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgW8MCkFRHnGYd0iab\r
-    9O++3ebBuKgwC/p4Mla4w8oknEyhRANCAAQLVzKMxW7PKC5bajONfa9mv2BpMWO5\r
-    +u9VXips3R9SfoR40ipND3AnJwUVQrD+F/mmfW4LBDnbheBCPGdGAQ8O\r
+    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgk5qXKVB/gzzeOOiK\r
+    UuwYuYituCPi/JcWXGKBIc0DrBKhRANCAASe7ZgUSbjJh+8d3iH3xKB7l+Habteb\r
+    rPoMMuAMQIbrJYdukbGjQojCPWnu4gNyCS6GhNqqqH1sE+H230b2Egt3\r
     -----END PRIVATE KEY-----\r
     """
     protocol = "quic"
@@ -75,6 +75,7 @@ data:
     protocol = "quic"
 
     [network_zenoh.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "network"
@@ -88,6 +89,7 @@ data:
     network_port = 50000
 
     [consensus_overlord.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "consensus"
@@ -99,6 +101,7 @@ data:
     metrics_port = 60002
 
     [executor_evm.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "executor"
@@ -111,13 +114,14 @@ data:
     storage_port = 50003
 
     [storage_rocksdb.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "storage"
 
     [genesis_block]
     prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
-    timestamp = 1676016450684
+    timestamp = 1677225735317
 
     [system_config]
     admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
@@ -126,10 +130,10 @@ data:
     chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
     quota_limit = 1073741824
     validators = [
-        "a758a550207d2068015aa375061833d98ad18e0b0b43177d49466820a677a1ba01d30696122b448dbc377d49e03858c5",
-        "87a363b1ef005dba2107f2dfb7bffbae699bb077d1fe12311662c76d28baf49e719d6244b5940c3be530ed53dc96a9ff",
-        "8d1f9de564190ececc49210d6fbcabe7d0202d79b5a63374a8fe1e419b279414e9740f20d5153fb9a9daade620c86c15",
-        "a9d27b8d0e69afe3eb9162c81c5ecbf5342c1fa96a7620dc73a0a42be9324dbddf9faa5f9e6d67581f97cac0002f03fa",
+        "865bb0941877571820ea99f0e72398d6173655b7684a94598518b71d17a5f35f170a10c6a76a8df5c9c6113f8db4a3d9",
+        "925a72bceb7f5ebaaf0f50ab525a1967fc48bc113795ddad2ae6d472d073234cd68d9837375d808a0bc6d1aa16d4d6e5",
+        "810a1bbbb3d300498f777502c1d62d0da074b849a24f77ae247f7d73c0978916c9cfd58dde6b8fc09a3d04cbd8f1cfb6",
+        "928404a9b72168d138cca6719a740026a4fcd617eea69bf243fb3e0f5b6a5b2d9ab83ccb8fac7e14a069ed3f1ac5618b",
     ]
     version = 0
 
@@ -148,6 +152,7 @@ data:
     validator_address = "/mnt/validator_address"
 
     [controller.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "controller"
@@ -159,6 +164,7 @@ data:
     metrics_port = 60005
 
     [crypto_sm.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "crypto"

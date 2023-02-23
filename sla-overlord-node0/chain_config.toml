@@ -2,27 +2,27 @@ stage = "Finalize"
 
 [[micro_service_list]]
 image = "network_zenoh"
-tag = "latest"
+tag = "v6.6.4"
 
 [[micro_service_list]]
 image = "consensus_overlord"
-tag = "latest"
+tag = "v6.6.4"
 
 [[micro_service_list]]
 image = "executor_evm"
-tag = "latest"
+tag = "v6.6.4"
 
 [[micro_service_list]]
 image = "storage_rocksdb"
-tag = "latest"
+tag = "v6.6.4"
 
 [[micro_service_list]]
 image = "controller"
-tag = "latest"
+tag = "v6.6.4"
 
 [[micro_service_list]]
 image = "crypto_sm"
-tag = "latest"
+tag = "v6.6.4"
 
 [[node_network_address_list]]
 cluster = "k8s"
@@ -61,7 +61,7 @@ svc_port = 40000
 
 [genesis_block]
 prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
-timestamp = 1676016450684
+timestamp = 1677225735317
 
 [system_config]
 admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
@@ -70,10 +70,10 @@ block_limit = 100
 chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
 quota_limit = 1073741824
 validators = [
-    "a758a550207d2068015aa375061833d98ad18e0b0b43177d49466820a677a1ba01d30696122b448dbc377d49e03858c5",
-    "87a363b1ef005dba2107f2dfb7bffbae699bb077d1fe12311662c76d28baf49e719d6244b5940c3be530ed53dc96a9ff",
-    "8d1f9de564190ececc49210d6fbcabe7d0202d79b5a63374a8fe1e419b279414e9740f20d5153fb9a9daade620c86c15",
-    "a9d27b8d0e69afe3eb9162c81c5ecbf5342c1fa96a7620dc73a0a42be9324dbddf9faa5f9e6d67581f97cac0002f03fa",
+    "865bb0941877571820ea99f0e72398d6173655b7684a94598518b71d17a5f35f170a10c6a76a8df5c9c6113f8db4a3d9",
+    "925a72bceb7f5ebaaf0f50ab525a1967fc48bc113795ddad2ae6d472d073234cd68d9837375d808a0bc6d1aa16d4d6e5",
+    "810a1bbbb3d300498f777502c1d62d0da074b849a24f77ae247f7d73c0978916c9cfd58dde6b8fc09a3d04cbd8f1cfb6",
+    "928404a9b72168d138cca6719a740026a4fcd617eea69bf243fb3e0f5b6a5b2d9ab83ccb8fac7e14a069ed3f1ac5618b",
 ]
 version = 0
 

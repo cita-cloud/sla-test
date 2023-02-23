@@ -1,0 +1,150 @@
+[network_zenoh]
+ca_cert = """
+-----BEGIN CERTIFICATE-----\r
+MIIBajCCAQ+gAwIBAgIJAMYVYtg5cyY7MAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
+B0NJVEFIdWIxCzAJBgNVBAMTAkNBMCAXDTc1MDEwMTAwMDAwMFoYDzQwOTYwMTAx\r
+MDAwMDAwWjAfMRAwDgYDVQQKDAdDSVRBSHViMQswCQYDVQQDEwJDQTBZMBMGByqG\r
+SM49AgEGCCqGSM49AwEHA0IABD56M0qZzlhxQ+v6bE6WuAZjjMOTizQY2UU2XVwX\r
+145tSWr0wTH8tcBwdYnkxBU2FtNZB4e4RVuakZZIGDctxL6jMjAwMB0GA1UdDgQW\r
+BBQ7JnM52GIVxhUe5FGU5irjWeWKNzAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49\r
+BAMCA0kAMEYCIQDCSa8u/SKUsGHZyOEbZQ45RvSeZ/wsuOE7uOrl093AdAIhAMqx\r
+sR+MbokyBU0/kn3bkSDtf5eoo+23+dIDaZ7I3iTS\r
+-----END CERTIFICATE-----\r
+"""
+cert = """
+-----BEGIN CERTIFICATE-----\r
+MIIBXzCCAQWgAwIBAgIIKpk3/z18OmcwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
+MDAwMDBaMCsxEDAOBgNVBAoMB0NJVEFIdWIxFzAVBgNVBAMTDnNsYS1yYWZ0LW5v\r
+ZGUzMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEv41buQAPzygx3LYkyUbLlmBZ\r
+5dhsnwFlifoNrDDqPkxcM3ySEWoYCkpmGjD5R0EfTNGuUuoMYl0LFS59nkbRIqMd\r
+MBswGQYDVR0RBBIwEIIOc2xhLXJhZnQtbm9kZTMwCgYIKoZIzj0EAwIDSAAwRQIh\r
+AJfPx1U8tDugZefSLUuRhvcUOM7kXtHq9cruXdLmoHpDAiBoY14c9tWSyhY5+Zlm\r
+zp89LR7vPPFDWorkx9arPDgwOQ==\r
+-----END CERTIFICATE-----\r
+"""
+chain_id = "c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466"
+domain = "sla-raft-node3"
+enable_metrics = true
+grpc_port = 50000
+metrics_port = 60000
+node_address = "/mnt/node_address"
+port = 40000
+priv_key = """
+-----BEGIN PRIVATE KEY-----\r
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgMzEkYsvI0PRXvW5c\r
+i1Xw48PlqB/ko+v13e3+gEsqC4ahRANCAAS/jVu5AA/PKDHctiTJRsuWYFnl2Gyf\r
+AWWJ+g2sMOo+TFwzfJIRahgKSmYaMPlHQR9M0a5S6gxiXQsVLn2eRtEi\r
+-----END PRIVATE KEY-----\r
+"""
+protocol = "quic"
+validator_address = "/mnt/validator_address"
+
+[[network_zenoh.modules]]
+hostname = "127.0.0.1"
+module_name = "consensus"
+port = 50001
+
+[[network_zenoh.modules]]
+hostname = "127.0.0.1"
+module_name = "controller"
+port = 50004
+
+[[network_zenoh.peers]]
+domain = "sla-raft-node0"
+port = 40000
+protocol = "quic"
+
+[[network_zenoh.peers]]
+domain = "sla-raft-node1"
+port = 40000
+protocol = "quic"
+
+[[network_zenoh.peers]]
+domain = "sla-raft-node2"
+port = 40000
+protocol = "quic"
+
+[network_zenoh.log_config]
+filter = "info"
+max_level = "info"
+service_name = "network"
+
+[consensus_raft]
+controller_port = 50004
+enable_metrics = true
+grpc_listen_port = 50001
+metrics_port = 60001
+network_port = 50000
+node_addr = "/mnt/node_address"
+
+[executor_evm]
+domain = "sla-raft-node3"
+enable_metrics = true
+executor_port = 50002
+metrics_port = 60002
+
+[executor_evm.log_config]
+filter = "info"
+max_level = "info"
+service_name = "executor"
+
+[storage_rocksdb]
+crypto_port = 50005
+domain = "sla-raft-node3"
+enable_metrics = true
+metrics_port = 60003
+storage_port = 50003
+
+[storage_rocksdb.log_config]
+filter = "info"
+max_level = "info"
+service_name = "storage"
+
+[genesis_block]
+prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+timestamp = 1677225133114
+
+[system_config]
+admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
+block_interval = 3
+block_limit = 100
+chain_id = "c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466"
+quota_limit = 1073741824
+validators = [
+    "26610b92a90523eaae3fa4903a167e1135f39153",
+    "99a82d112940cfffa95182921fe6e8a1fd8b8539",
+    "ea0345ad8c8c1c5278b52fb2e8042c9442ed1a90",
+]
+version = 0
+
+[controller]
+consensus_port = 50001
+controller_port = 50004
+crypto_port = 50005
+domain = "sla-raft-node3"
+enable_metrics = true
+executor_port = 50002
+is_danger = false
+metrics_port = 60004
+network_port = 50000
+node_address = "/mnt/node_address"
+storage_port = 50003
+validator_address = "/mnt/validator_address"
+
+[controller.log_config]
+filter = "info"
+max_level = "info"
+service_name = "controller"
+
+[crypto_sm]
+crypto_port = 50005
+domain = "sla-raft-node3"
+enable_metrics = true
+metrics_port = 60005
+
+[crypto_sm.log_config]
+filter = "info"
+max_level = "info"
+service_name = "crypto"
+

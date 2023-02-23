@@ -1,8 +1,7 @@
 # SLA测试
 
 长期可靠性测试。
-基础环境为k8s环境，有5个work节点，配置为4c8g。
-链配置为4个共识节点1个只读节点。
+基础环境为k8s环境，节点配置为4c8g。
 
 ## 依赖
 
@@ -19,66 +18,111 @@ pip install kubernetes tenacity
 
 ## 部署
 
-当前版本为v6.6.3。
+当前版本为v6.6.4。
 
 ### 生成链配置
 
-环境变量设置：
+环境变量设置，参见`env.sh`:
 
 ```bash
-# 设置docker镜像仓库
-export DOCKER_REGISTRY=docker.io
-export DOCKER_REPO=citacloud
-# export DOCKER_REGISTRY=registry.devops.rivtower.com
-# export DOCKER_REPO=cita-cloud
+$ cat ./env.sh
+#!/bin/bash
+
+# 设置镜像仓库
+# export DOCKER_REGISTRY=docker.io
+# export DOCKER_REPO=citacloud
+export DOCKER_REGISTRY=registry.devops.rivtower.com
+export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.6.3
+export RELEASE_VERSION=v6.6.4
 
 # 设置链的类型和名称
-export CHIAN_TYPE=bft
 # export CHIAN_TYPE=raft
-# export CHIAN_TYPE=overlord
+export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class
-export SC=ceph-filesystem
+export SC=nas-client-provisioner
 
+# 设置要使用的NameSpace
 export NAME_SPACE=cita-cloud-sla
+
+# 设置jager agent endpoint，如果不使用链路追踪功能则不设置该变量
+export JAEGER_AGENT_ENDPOINT=jaeger.tracing.svc:6831
 ```
 
 生成配置文件：
 
 ```bash
-# 生成初始的4个共识节点配置
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config create-k8s --chain-name $CHAIN_NAME --admin 0x9bab5858df4a9e84ff3958884a01a4fce5e07edb --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s --controller_tag $RELEASE_VERSION --consensus_image consensus_$CHIAN_TYPE --consensus_tag $RELEASE_VERSION --crypto_tag $RELEASE_VERSION --network_tag $RELEASE_VERSION --storage_tag $RELEASE_VERSION --executor_tag $RELEASE_VERSION
-
-# 增加一个只读节点的配置
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config append-k8s --chain-name $CHAIN_NAME --node localhost:40004:node4:k8s
-
-# 生成所有节点配置的yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node4
+$ ./gen.sh
+gen config for overlord chain: 4 consensus and 1 readonly
+node_address: 5ea1d94b5e405f18e7e5f8558dceae6e09e13058 validator_address: a8b7802c2d79b87624fee40c2c4dcf25eb4aeaf1723032f32f9fb1e0d671af997bc97af02492719c58fc9ed5b65a6f87
+node_address: 76c8940d4868f2f6cfaef3b795239ef21b8ab512 validator_address: 81cf242de468b38b89f12ff3691500068406e3efec75755ec1572fcf7da8bd6743761971b5a19d33b74716ddac3bef48
+node_address: 3990752e3978a03791058e8aea3bd913c93606ee validator_address: b611e4e9c93bd2ea38542bdd0ac07a43952f37ca8dbc57a26d477c570f6cae32f2c155ef9a36f014eae9316895ef5731
+node_address: 8c290cbb42a58233051401ce63d4373f759db790 validator_address: 8617542d2209cfbfea817d27e1b23187528fb0c9b2b61e307eca188fd40540177c28908919ce7c23f37c8f7e6dbea941
+node_address: 31406f8b66a0d0e10a677f3340a3d558548a0c8b validator_address: a07f048cb253c475f97f717be4717cac94480d9c3a9108117dfa0e7d009c2932de17268a346e593bec709a317c7c9724
 ```
 
 ### 部署链
 
 ```bash
-kubectl create ns $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node0/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node1/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node2/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node3/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node4/yamls/ -n $NAME_SPACE
+$ ./apply.sh
+apply overlord chain: 4 consensus and 1 readonly
+configmap/sla-overlord-node0-account created
+configmap/sla-overlord-node0-config created
+service/sla-overlord-node0 created
+statefulset.apps/sla-overlord-node0 created
+configmap/sla-overlord-node1-account created
+configmap/sla-overlord-node1-config created
+service/sla-overlord-node1 created
+statefulset.apps/sla-overlord-node1 created
+configmap/sla-overlord-node2-account created
+configmap/sla-overlord-node2-config created
+service/sla-overlord-node2 created
+statefulset.apps/sla-overlord-node2 created
+configmap/sla-overlord-node3-account created
+configmap/sla-overlord-node3-config created
+service/sla-overlord-node3 created
+statefulset.apps/sla-overlord-node3 created
+configmap/sla-overlord-node4-account created
+configmap/sla-overlord-node4-config created
+service/sla-overlord-node4 created
+statefulset.apps/sla-overlord-node4 created
+```
+
+### 停链
+
+```bash
+$ ./delete.sh
+delete overlord chain: 4 consensus and 1 readonly
+configmap "sla-overlord-node0-account" deleted
+configmap "sla-overlord-node0-config" deleted
+service "sla-overlord-node0" deleted
+statefulset.apps "sla-overlord-node0" deleted
+configmap "sla-overlord-node1-account" deleted
+configmap "sla-overlord-node1-config" deleted
+service "sla-overlord-node1" deleted
+statefulset.apps "sla-overlord-node1" deleted
+configmap "sla-overlord-node2-account" deleted
+configmap "sla-overlord-node2-config" deleted
+service "sla-overlord-node2" deleted
+statefulset.apps "sla-overlord-node2" deleted
+configmap "sla-overlord-node3-account" deleted
+configmap "sla-overlord-node3-config" deleted
+service "sla-overlord-node3" deleted
+statefulset.apps "sla-overlord-node3" deleted
+configmap "sla-overlord-node4-account" deleted
+configmap "sla-overlord-node4-config" deleted
+service "sla-overlord-node4" deleted
+statefulset.apps "sla-overlord-node4" deleted
 ```
 
 ### 部署节点负载均衡
 
 ```bash
-# 提前设置好 CHAIN_NAME/NAME_SPACE 环境变量
+# 设置环境变量
+source ./env.sh
 envsubst < lb/envoy-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 ```
 
@@ -90,7 +134,8 @@ envsubst < lb/envoy-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 ### 部署缓存服务
 
 ```bash
-# 提前设置好 CHAIN_NAME/NAME_SPACE/SC/RELEASE_VERSION 环境变量
+# 设置环境变量
+source ./env.sh
 envsubst < cache/cache-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 ```
 
@@ -100,8 +145,12 @@ envsubst < cache/cache-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 后续运维操作需要依赖`cita-node-operator`。
 
-```
+```bash
+# 设置环境变量
+source ./env.sh
+# 添加helm仓库
 helm repo add cita-node-operator https://cita-cloud.github.io/cita-node-operator
+# 部署operator
 helm install cita-node-operator cita-node-operator/cita-node-operator -n=$NAME_SPACE
 ```
 
@@ -110,7 +159,8 @@ helm install cita-node-operator cita-node-operator/cita-node-operator -n=$NAME_S
 ### 部署测试
 
 ```bash
-# 提前设置好 CHAIN_NAME/NAME_SPACE/SC/RELEASE_VERSION 环境变量
+# 设置环境变量
+source ./env.sh
 envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 ```
 
@@ -120,6 +170,13 @@ envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 ## 运维测试
 
+操作前要先设置环境变量：
+
+```bash
+# 设置环境变量
+source ./env.sh
+```
+
 ### 升级版本
 
 采用通用的底链升级策略，视具体版本的情况，可能需要一些额外的变更操作。
@@ -128,7 +185,7 @@ envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
 
 ```bash
 # 设置要升级的新版本版本号
-export RELEASE_VERSION=v6.6.3
+export RELEASE_VERSION=v6.6.4
 bash -x ./upgrade/upgrade.sh
 ```
 
@@ -136,43 +193,37 @@ bash -x ./upgrade/upgrade.sh
 
 ### 备份节点数据
 
-```shell
-# 提前设置好 CHAIN_NAME/NAME_SPACE/SC/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+```bash
 python3 ./script/backup.py -n node4
 ```
 
 ### 从备份恢复节点数据
 
-```shell
-# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+```bash
 python3 ./script/restore.py -n node0 -m backup
 ```
 
 ### 消块
 
-```shell
-# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+```bash
 python3 ./script/block_height_fallback.py -n node0 -b 100
 ```
 
 ### 快照
 
-```shell
-# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+```bash
 python3 ./script/snapshot.py -n node4 -b 200
 ```
 
 ### 从快照恢复节点数据
 
-```shell
-# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
+```bash
 python3 ./script/restore.py -n node0 -m snapshot
 ```
 
 ### 守护节点切换
 
 ```bash
-# 提前设置好 CHAIN_NAME/NAME_SPACE/DOCKER_REGISTRY/DOCKER_REPO 环境变量
 python3 ./script/switchover.py -s node0 -d node4
 ```
 
@@ -189,12 +240,12 @@ cp $CHAIN_NAME-node0/ca_cert/key.pem $CHAIN_NAME/ca_cert/
 docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config append-k8s --chain-name $CHAIN_NAME --node localhost:40005:node5:k8s
 
 # 更新所有节点配置的yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node4
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node5
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node4
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node5
 ```
 
 重新部署所有节点
@@ -335,6 +386,13 @@ Sending transactions..
 循环调用以上命令即可实现一段时间的压力测试。
 
 ## 故障演练
+
+操作前要先设置环境变量：
+
+```bash
+# 设置环境变量
+source ./env.sh
+```
 
 ### 重启
 

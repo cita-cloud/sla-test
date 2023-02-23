@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+binaryData:
+  private_key: M2QzNGI5ZjJiNTVlMDYxZDExZTQ1M2U1YmFhOGYwM2IxM2ZkMDQ3NmIwOGU1ZjY3NjA1N2RiNGIxMjcwMjVkNg==
+data:
+  node_address: 23f35c5ac1c9b69aea47b84a77cec191a497bbf8
+  validator_address: 23f35c5ac1c9b69aea47b84a77cec191a497bbf8
+metadata:
+  labels:
+    app.kubernetes.io/chain-name: sla-raft
+    app.kubernetes.io/chain-node: sla-raft-node3
+  name: sla-raft-node3-account

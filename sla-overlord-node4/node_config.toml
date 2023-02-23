@@ -1,4 +1,4 @@
-account = "c1ae4c528bc5d3e28aa611b6114eb3f1c4b62f5b"
+account = "1ea67cd2df9c233b0207f91c94ae9baf12ec71c6"
 enable_metrics = true
 is_danger = false
 log_level = "info"

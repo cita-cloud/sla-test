@@ -50,15 +50,19 @@ data:
     port = 8000
     controller_addr = "http://${CHAIN_NAME}-envoy:60004"
     executor_addr = "http://${CHAIN_NAME}-envoy:60002"
+    local_executor_addr = "http://${CHAIN_NAME}-envoy:60002"
     crypto_addr = "http://127.0.0.1:50005"
     redis_addr = "redis://default:rivtower@127.0.0.1:6379"
-    timing_internal_sec = 1
-    timing_batch = 400
-    account = "757ca1c731a3d7e9bdbd0e22ee65918674a77bd7"
-    log_level = "normal"
+    redis_max_workers = 64
     expire_time = 60
-    rough_internal = 10
+    timing_internal_sec = 1
+    timing_batch = 10000
+    stream_block_ms = 50
+    stream_max_count = 10000
+    packaged_tx_vub = 50
     crypto_type = "SM"
+    is_master = true
+    log_level = "normal"
 metadata:
   name: ${CHAIN_NAME}-cache-config
 
@@ -128,9 +132,9 @@ spec:
         - command:
             - /bin/sh
             - "-c"
-            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=512 ROCKET_ACCOUNT=757ca1c731a3d7e9bdbd0e22ee65918674a77bd7 cache"
+            - "ROCKET_CONFIG=/etc/cita-cloud/config/Cache.toml ROCKET_MAX_BLOCKING=2048 ROCKET_WORKERS=64 cache"
           name: cache
-          image: "docker.io/citacloud/cache:v0.2.5"
+          image: "docker.io/citacloud/cache:v0.3.0beta"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000

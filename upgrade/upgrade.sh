@@ -23,27 +23,55 @@ docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud
 # 链级配置修改完成，设置stage
 docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-stage --chain-name $CHAIN_NAME
 
-# 设置节点列表，共识节点和只读节点都在内
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-nodelist --chain-name $CHAIN_NAME --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s,localhost:40004:node4:k8s
+if [ $CHIAN_TYPE == "overlord" ]
+then
+    # 设置节点列表，共识节点和只读节点都在内
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-nodelist --chain-name $CHAIN_NAME --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s,localhost:40004:node4:k8s
 
 
-# 重新初始化所有节点，前四个为共识节点，最后一个为只读节点
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node4 --account $(python3 -c 'import toml;import os; config = "{}-node4/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    # 重新初始化所有节点，前四个为共识节点，最后一个为只读节点
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node4 --account $(python3 -c 'import toml;import os; config = "{}-node4/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
 
-# 生成所有节点配置文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node4
+    # 生成所有节点配置文件
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node0
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node1
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node2
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node3
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node4
 
-#生成所有节点yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node4
+    #生成所有节点yaml文件
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node4
+fi
+
+if [ $CHIAN_TYPE == "raft" ]
+then
+    # 设置节点列表，共识节点和只读节点都在内
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-nodelist --chain-name $CHAIN_NAME --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s
+
+
+    # 重新初始化所有节点，前四个为共识节点，最后一个为只读节点
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+
+    # 生成所有节点配置文件
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node0
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node1
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node2
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node3
+
+    #生成所有节点yaml文件
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
+fi
