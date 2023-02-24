@@ -1,6 +1,8 @@
-account = 'f8024f2006bbb37975d8fa8bb18d0149909da817'
+account = "5435a513062b528415a0502e9e1f0a7f16a53451"
 enable_metrics = true
-log_level = 'info'
+is_danger = false
+jaeger_agent_endpoint = "jaeger.tracing.svc:6831"
+log_level = "info"
 network_listen_port = 40000
 
 [grpc_ports]

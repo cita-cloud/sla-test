@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 binaryData:
-  private_key: MWU4ZWVjMTA2NTM0MmU1Mjk1MWRiOTY2MjU0NDkwM2QyYWFlYThjMmY5Y2Y0MjNhNGViYzliNDA1NWVmM2VmNg==
+  private_key: Mzc0NWViNGE4OTNkOTI4OTRjMTdjYjlhOWIxZjE5YjFjNWZkYWQzMjgzMTdlYmJmNmU3NjFmYzQ2M2UzN2VmMw==
 data:
-  node_address: f8024f2006bbb37975d8fa8bb18d0149909da817
-  validator_address: a3ef601fdfff2a52e6cd735b06964d3ca955036fd10fa6f8f48dceef6538aa88e7cc7f45336b577297f98ae49b5a024d
+  node_address: 5435a513062b528415a0502e9e1f0a7f16a53451
+  validator_address: 925a72bceb7f5ebaaf0f50ab525a1967fc48bc113795ddad2ae6d472d073234cd68d9837375d808a0bc6d1aa16d4d6e5
 metadata:
   labels:
     app.kubernetes.io/chain-name: sla-overlord

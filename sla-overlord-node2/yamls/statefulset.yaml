@@ -36,9 +36,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/network-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -57,31 +55,29 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
         - mountPath: /mnt
           name: node-account
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       - command:
         - consensus
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/consensus-log4rs.yaml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/consensus_overlord:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/consensus_overlord:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -97,29 +93,27 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
         - mountPath: /mnt
           name: node-account
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       - command:
         - executor
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/executor-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -135,27 +129,25 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       - command:
         - storage
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/storage-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/storage_rocksdb:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/storage_rocksdb:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -171,27 +163,25 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       - command:
         - controller
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/controller-log4rs.yaml
-        image: registry.devops.rivtower.com/cita-cloud/controller:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/controller:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -207,31 +197,29 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
         - mountPath: /mnt
           name: node-account
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       - command:
         - crypto
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        - -l
-        - /etc/cita-cloud/log/crypto-log4rs.yaml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/crypto_sm:v6.6.3
+        image: registry.devops.rivtower.com/cita-cloud/crypto_sm:v6.6.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -247,20 +235,20 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: '1'
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8192Mi
           requests:
-            cpu: 120m
-            memory: 240Mi
+            cpu: 10m
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datadir
         - mountPath: /etc/cita-cloud/config
           name: node-config
-        - mountPath: /etc/cita-cloud/log
-          name: node-log
         - mountPath: /mnt
           name: node-account
+        - mountPath: /etc/localtime
+          name: node-localtime
         workingDir: /data
       hostAliases:
       - hostnames:
@@ -277,9 +265,9 @@ spec:
       - configMap:
           name: sla-overlord-node2-config
         name: node-config
-      - configMap:
-          name: sla-overlord-node2-log
-        name: node-log
+      - hostPath:
+          path: /etc/localtime
+        name: node-localtime
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
@@ -291,4 +279,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: ceph-filesystem
+      storageClassName: nas-client-provisioner

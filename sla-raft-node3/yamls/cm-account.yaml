@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 binaryData:
-  private_key: NmY1MTNlNDFiYThlZTBkY2Q1YzAxNjM3NTY3ODg5ZDU0ODRiYTFlNTQyNDJjOTYzMDNhZTBkYmYxMDNlZTNlZg==
+  private_key: M2QzNGI5ZjJiNTVlMDYxZDExZTQ1M2U1YmFhOGYwM2IxM2ZkMDQ3NmIwOGU1ZjY3NjA1N2RiNGIxMjcwMjVkNg==
 data:
-  node_address: 01e90547971f9fc96400214f616ee49be34e37e5
-  validator_address: 01e90547971f9fc96400214f616ee49be34e37e5
+  node_address: 23f35c5ac1c9b69aea47b84a77cec191a497bbf8
+  validator_address: 23f35c5ac1c9b69aea47b84a77cec191a497bbf8
 metadata:
   labels:
     app.kubernetes.io/chain-name: sla-raft

@@ -1,108 +1,135 @@
 [network_zenoh]
 ca_cert = """
 -----BEGIN CERTIFICATE-----\r
-MIIBaDCCAQ6gAwIBAgIIaQi1Lu35+kcwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+MIIBZzCCAQ6gAwIBAgIIYbDhARtcH30wCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
 Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
 MDAwMDBaMB8xEDAOBgNVBAoMB0NJVEFIdWIxCzAJBgNVBAMTAkNBMFkwEwYHKoZI\r
-zj0CAQYIKoZIzj0DAQcDQgAEAcsJEDnds2qUfGSr1/4g4aDQorcKSAO2/U1zN4R/\r
-fFc3qFiFUyYIWS6Huwd7yOzUVI2OOdly4PgJWnFWFo/bfqMyMDAwHQYDVR0OBBYE\r
-FEf6+e0utQhpBiKPZ6HWVAOPA7onMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
-AwIDSAAwRQIhAJuN/yHBcX/hAltItbBaEBWfUjq5P8Gc+5o/Ln1BvvGoAiAwSg6X\r
-rqBRyiZ9F4QhvEhoAf0FIB1RBDR8FTbLYuWczw==\r
+zj0CAQYIKoZIzj0DAQcDQgAE6KklnxT7ovUXCQHube9spKXe+RPW7SBVXyWiQKSA\r
+j6PaRGC6Mnx8vwg4hu0M9aHLT3o5UW66ySyOawrwQiQIP6MyMDAwHQYDVR0OBBYE\r
+FH0fXBsB4bBhaFkC7kCRkGNOX5RgMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0E\r
+AwIDRwAwRAIgErCy1bfz4xh8RGZ43VzOZRsJGiR0b5C2aivOhBtFR98CIDOoY794\r
+azqy9Jzfc0iJbXN4hzUzYBWgpNWfID9bNdLO\r
 -----END CERTIFICATE-----\r
 """
 cert = """
 -----BEGIN CERTIFICATE-----\r
-MIIBZzCCAQ2gAwIBAgIITcUp+hmHY7YwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
+MIIBZzCCAQ2gAwIBAgIIXmb2YDttg7YwCgYIKoZIzj0EAwIwHzEQMA4GA1UECgwH\r
 Q0lUQUh1YjELMAkGA1UEAxMCQ0EwIBcNNzUwMTAxMDAwMDAwWhgPNDA5NjAxMDEw\r
 MDAwMDBaMC8xEDAOBgNVBAoMB0NJVEFIdWIxGzAZBgNVBAMTEnNsYS1vdmVybG9y\r
-ZC1ub2RlMjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBv40ylG2hd9iNLMw3ZE\r
-TyJhjbNPy5oGNr3kW0KTHI31cJYpNNhHUUByfHs60wn0jneTnmwem5G/MTMrmMfq\r
-Jn+jITAfMB0GA1UdEQQWMBSCEnNsYS1vdmVybG9yZC1ub2RlMjAKBggqhkjOPQQD\r
-AgNIADBFAiEA/MdGTqJtXkY17z3FVzExEIj97uLa8zaAE3FUkOSHkjkCIEF0wc/0\r
-eIuhxYJbyI3Q1CWmfHIfYuZlBu3h3zeeEerd\r
+ZC1ub2RlMjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABDuIkY1p3/fBUzro13p5\r
+SVn+YM2ru5JKOaIQzCOGledQq9539T/JoxLMLghk0a/7lzlVWe/WSHo597f2ehCV\r
+V0ijITAfMB0GA1UdEQQWMBSCEnNsYS1vdmVybG9yZC1ub2RlMjAKBggqhkjOPQQD\r
+AgNIADBFAiAi4Wuv56EgJd4EfApKCenHDV7u+h+oVPkbuNvrzJMZ3QIhAItLGDMi\r
+SpiIZuiW1ZHYG88FpRCVJzcmTFwQ5iUtlK2v\r
 -----END CERTIFICATE-----\r
 """
-chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
-domain = 'sla-overlord-node2'
+chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
+domain = "sla-overlord-node2"
 enable_metrics = true
 grpc_port = 50000
 metrics_port = 60000
-node_address = '/mnt/node_address'
+node_address = "/mnt/node_address"
 port = 40000
 priv_key = """
 -----BEGIN PRIVATE KEY-----\r
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgHVvxtzn23zpdjTfC\r
-WnRaW28CxV5KDcTfh88y5TOmL6ShRANCAAQb+NMpRtoXfYjSzMN2RE8iYY2zT8ua\r
-Bja95FtCkxyN9XCWKTTYR1FAcnx7OtMJ9I53k55sHpuRvzEzK5jH6iZ/\r
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgD2iHcdFhWv/+ic9o\r
+w4nmKNXKEG9eHY92eNlNNZjmo2GhRANCAAQ7iJGNad/3wVM66Nd6eUlZ/mDNq7uS\r
+SjmiEMwjhpXnUKved/U/yaMSzC4IZNGv+5c5VVnv1kh6Ofe39noQlVdI\r
 -----END PRIVATE KEY-----\r
 """
-protocol = 'quic'
-validator_address = '/mnt/validator_address'
+protocol = "quic"
+validator_address = "/mnt/validator_address"
 
 [[network_zenoh.modules]]
-hostname = '127.0.0.1'
-module_name = 'consensus'
+hostname = "127.0.0.1"
+module_name = "consensus"
 port = 50001
 
 [[network_zenoh.modules]]
-hostname = '127.0.0.1'
-module_name = 'controller'
+hostname = "127.0.0.1"
+module_name = "controller"
 port = 50004
 
 [[network_zenoh.peers]]
-domain = 'sla-overlord-node0'
+domain = "sla-overlord-node0"
 port = 40000
-protocol = 'quic'
+protocol = "quic"
 
 [[network_zenoh.peers]]
-domain = 'sla-overlord-node1'
+domain = "sla-overlord-node1"
 port = 40000
-protocol = 'quic'
+protocol = "quic"
 
 [[network_zenoh.peers]]
-domain = 'sla-overlord-node3'
+domain = "sla-overlord-node3"
 port = 40000
-protocol = 'quic'
+protocol = "quic"
 
 [[network_zenoh.peers]]
-domain = 'sla-overlord-node4'
+domain = "sla-overlord-node4"
 port = 40000
-protocol = 'quic'
+protocol = "quic"
+
+[network_zenoh.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "network"
 
 [consensus_overlord]
 consensus_port = 50001
 controller_port = 50004
+domain = "sla-overlord-node2"
 enable_metrics = true
 metrics_port = 60001
 network_port = 50000
 
+[consensus_overlord.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "consensus"
+
 [executor_evm]
+domain = "sla-overlord-node2"
 enable_metrics = true
 executor_port = 50002
 metrics_port = 60002
 
+[executor_evm.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "executor"
+
 [storage_rocksdb]
 crypto_port = 50005
+domain = "sla-overlord-node2"
 enable_metrics = true
 metrics_port = 60003
 storage_port = 50003
 
+[storage_rocksdb.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "storage"
+
 [genesis_block]
-prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
-timestamp = 1672303625944
+prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+timestamp = 1677225735317
 
 [system_config]
-admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
 block_interval = 3
 block_limit = 100
-chain_id = 'd00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe'
+chain_id = "d00da2a44f0b3d12111a7bfd71db25fd77a765493d6a4c9e66717d743e2ebbbe"
 quota_limit = 1073741824
 validators = [
-    'addd1a936e4c50d94108da63ab843c491a120827be12d37ad6bebab39639a47dd231df139c40180dee8a3f9acee7c5f6',
-    'a3ef601fdfff2a52e6cd735b06964d3ca955036fd10fa6f8f48dceef6538aa88e7cc7f45336b577297f98ae49b5a024d',
-    '877739e2ac26e16204a0be85daee6dd5dd1e81b2b68b9af515c3fca26662b1c7f165066466607db095a0f68798d2b605',
-    '9109cd4e80392a2c1b3f81b63dc30c5bae25e6c38f806e83e351da4fe4b2506a5c4173577a2396466789e97a0245b7ab',
+    "865bb0941877571820ea99f0e72398d6173655b7684a94598518b71d17a5f35f170a10c6a76a8df5c9c6113f8db4a3d9",
+    "925a72bceb7f5ebaaf0f50ab525a1967fc48bc113795ddad2ae6d472d073234cd68d9837375d808a0bc6d1aa16d4d6e5",
+    "810a1bbbb3d300498f777502c1d62d0da074b849a24f77ae247f7d73c0978916c9cfd58dde6b8fc09a3d04cbd8f1cfb6",
+    "928404a9b72168d138cca6719a740026a4fcd617eea69bf243fb3e0f5b6a5b2d9ab83ccb8fac7e14a069ed3f1ac5618b",
 ]
 version = 0
 
@@ -110,16 +137,31 @@ version = 0
 consensus_port = 50001
 controller_port = 50004
 crypto_port = 50005
+domain = "sla-overlord-node2"
 enable_metrics = true
 executor_port = 50002
+is_danger = false
 metrics_port = 60004
 network_port = 50000
-node_address = '/mnt/node_address'
+node_address = "/mnt/node_address"
 storage_port = 50003
-validator_address_len = 48
+validator_address = "/mnt/validator_address"
+
+[controller.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "controller"
 
 [crypto_sm]
 crypto_port = 50005
+domain = "sla-overlord-node2"
 enable_metrics = true
 metrics_port = 60005
+
+[crypto_sm.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
+filter = "info"
+max_level = "info"
+service_name = "crypto"
 

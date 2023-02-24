@@ -5,69 +5,75 @@ data:
     [network_zenoh]
     ca_cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBajCCAQ+gAwIBAgIJAKiVSikO5DylMAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
+    MIIBajCCAQ+gAwIBAgIJAMYVYtg5cyY7MAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
     B0NJVEFIdWIxCzAJBgNVBAMTAkNBMCAXDTc1MDEwMTAwMDAwMFoYDzQwOTYwMTAx\r
     MDAwMDAwWjAfMRAwDgYDVQQKDAdDSVRBSHViMQswCQYDVQQDEwJDQTBZMBMGByqG\r
-    SM49AgEGCCqGSM49AwEHA0IABDbkfoT24l7BffL/4K3Pdv2bcvdUhtkr2y//I6V3\r
-    KUy/PRicZYR24VU1a5Y8nBa9E0cHGNgnNCTiJoU+EvXGYCGjMjAwMB0GA1UdDgQW\r
-    BBSlPOQOKUqVqPQm+qv/5Y0DClT87DAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49\r
-    BAMCA0kAMEYCIQCLbktpiWjAA0C/MEqFnwr9zRNiDkoNJ2oNYH39vHCi3wIhAOvS\r
-    XxeRdfRUT2jxeAHwcp7AYE0ijAqc1VJAdsuDLk/6\r
+    SM49AgEGCCqGSM49AwEHA0IABD56M0qZzlhxQ+v6bE6WuAZjjMOTizQY2UU2XVwX\r
+    145tSWr0wTH8tcBwdYnkxBU2FtNZB4e4RVuakZZIGDctxL6jMjAwMB0GA1UdDgQW\r
+    BBQ7JnM52GIVxhUe5FGU5irjWeWKNzAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49\r
+    BAMCA0kAMEYCIQDCSa8u/SKUsGHZyOEbZQ45RvSeZ/wsuOE7uOrl093AdAIhAMqx\r
+    sR+MbokyBU0/kn3bkSDtf5eoo+23+dIDaZ7I3iTS\r
     -----END CERTIFICATE-----\r
     """
     cert = """
     -----BEGIN CERTIFICATE-----\r
-    MIIBXzCCAQagAwIBAgIJANXHRSYhhPsMMAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
+    MIIBXzCCAQagAwIBAgIJANxg0jFXk4zlMAoGCCqGSM49BAMCMB8xEDAOBgNVBAoM\r
     B0NJVEFIdWIxCzAJBgNVBAMTAkNBMCAXDTc1MDEwMTAwMDAwMFoYDzQwOTYwMTAx\r
     MDAwMDAwWjArMRAwDgYDVQQKDAdDSVRBSHViMRcwFQYDVQQDEw5zbGEtcmFmdC1u\r
-    b2RlMDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABI5ZQsg0apsoovZoMvgUVkBW\r
-    eRkDb6JxGc79toP0ZfDkawUda0BgFuqE1hzlRZvzopsIhSFw+reKN4zeO8fmZAmj\r
+    b2RlMDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLkNErPdnz8oX/2S1WO6CYWS\r
+    /lPxoNuEd73ehwHU5KCJux63g2XU9ZfgkgGXUkTaQ77UeaxDz4egLwwp/vuXuUGj\r
     HTAbMBkGA1UdEQQSMBCCDnNsYS1yYWZ0LW5vZGUwMAoGCCqGSM49BAMCA0cAMEQC\r
-    IGTEFnJJEP5b4eW0OLc1Z2bVjpfwBf0kRPKuOky+hT4dAiA38BfoBzDUxTG4W8FB\r
-    68trzRQds4Lbqh6ftei6wXL8nw==\r
+    IGchPNsXgiJeglOPKcykhlKtpiKV+IGcsmCXV+RMJPxwAiADIGTnsBVNWpBgbqMO\r
+    zeQ3t94r/Qc6jHG830/nZ2JVuw==\r
     -----END CERTIFICATE-----\r
     """
-    chain_id = 'c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466'
-    domain = 'sla-raft-node0'
+    chain_id = "c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466"
+    domain = "sla-raft-node0"
     enable_metrics = true
     grpc_port = 50000
     metrics_port = 60000
-    node_address = '/mnt/node_address'
+    node_address = "/mnt/node_address"
     port = 40000
     priv_key = """
     -----BEGIN PRIVATE KEY-----\r
-    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgzewvIzcQPx+4vUlu\r
-    WCBHxE4mJLQajfP3o8ialn72djehRANCAASOWULINGqbKKL2aDL4FFZAVnkZA2+i\r
-    cRnO/baD9GXw5GsFHWtAYBbqhNYc5UWb86KbCIUhcPq3ijeM3jvH5mQJ\r
+    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgRP2f1kp/DILNR+xV\r
+    rbaIn8PllMwkfLDSI3z/+MtdmhWhRANCAAS5DRKz3Z8/KF/9ktVjugmFkv5T8aDb\r
+    hHe93ocB1OSgibset4Nl1PWX4JIBl1JE2kO+1HmsQ8+HoC8MKf77l7lB\r
     -----END PRIVATE KEY-----\r
     """
-    protocol = 'quic'
-    validator_address = '/mnt/validator_address'
+    protocol = "quic"
+    validator_address = "/mnt/validator_address"
 
     [[network_zenoh.modules]]
-    hostname = '127.0.0.1'
-    module_name = 'consensus'
+    hostname = "127.0.0.1"
+    module_name = "consensus"
     port = 50001
 
     [[network_zenoh.modules]]
-    hostname = '127.0.0.1'
-    module_name = 'controller'
+    hostname = "127.0.0.1"
+    module_name = "controller"
     port = 50004
 
     [[network_zenoh.peers]]
-    domain = 'sla-raft-node1'
+    domain = "sla-raft-node1"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
 
     [[network_zenoh.peers]]
-    domain = 'sla-raft-node2'
+    domain = "sla-raft-node2"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
 
     [[network_zenoh.peers]]
-    domain = 'sla-raft-node3'
+    domain = "sla-raft-node3"
     port = 40000
-    protocol = 'quic'
+    protocol = "quic"
+
+    [network_zenoh.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
+    filter = "info"
+    max_level = "info"
+    service_name = "network"
 
     [consensus_raft]
     controller_port = 50004
@@ -75,33 +81,47 @@ data:
     grpc_listen_port = 50001
     metrics_port = 60001
     network_port = 50000
-    node_addr = '/mnt/node_address'
+    node_addr = "/mnt/node_address"
 
     [executor_evm]
+    domain = "sla-raft-node0"
     enable_metrics = true
     executor_port = 50002
     metrics_port = 60002
 
+    [executor_evm.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
+    filter = "info"
+    max_level = "info"
+    service_name = "executor"
+
     [storage_rocksdb]
     crypto_port = 50005
+    domain = "sla-raft-node0"
     enable_metrics = true
     metrics_port = 60003
     storage_port = 50003
 
+    [storage_rocksdb.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
+    filter = "info"
+    max_level = "info"
+    service_name = "storage"
+
     [genesis_block]
-    prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
-    timestamp = 1672284552735
+    prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+    timestamp = 1677225133114
 
     [system_config]
-    admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+    admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
     block_interval = 3
     block_limit = 100
-    chain_id = 'c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466'
+    chain_id = "c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466"
     quota_limit = 1073741824
     validators = [
-        'b5fb8f3afe21956fe64ddc7b226e4663aa65b933',
-        'f76b5aa185a214f489c4a9dee47472712ff6d968',
-        '0b6227e744854b3fa4593e657a19a3cf56605750',
+        "26610b92a90523eaae3fa4903a167e1135f39153",
+        "99a82d112940cfffa95182921fe6e8a1fd8b8539",
+        "ea0345ad8c8c1c5278b52fb2e8042c9442ed1a90",
     ]
     version = 0
 
@@ -109,18 +129,33 @@ data:
     consensus_port = 50001
     controller_port = 50004
     crypto_port = 50005
+    domain = "sla-raft-node0"
     enable_metrics = true
     executor_port = 50002
+    is_danger = false
     metrics_port = 60004
     network_port = 50000
-    node_address = '/mnt/node_address'
+    node_address = "/mnt/node_address"
     storage_port = 50003
-    validator_address_len = 20
+    validator_address = "/mnt/validator_address"
+
+    [controller.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
+    filter = "info"
+    max_level = "info"
+    service_name = "controller"
 
     [crypto_sm]
     crypto_port = 50005
+    domain = "sla-raft-node0"
     enable_metrics = true
     metrics_port = 60005
+
+    [crypto_sm.log_config]
+    agent_endpoint = "jaeger.tracing.svc:6831"
+    filter = "info"
+    max_level = "info"
+    service_name = "crypto"
 
 metadata:
   labels:

@@ -1,71 +1,71 @@
-stage = 'Finalize'
+stage = "Finalize"
 
 [[micro_service_list]]
-image = 'network_zenoh'
-tag = 'v6.6.3'
+image = "network_zenoh"
+tag = "v6.6.4"
 
 [[micro_service_list]]
-image = 'consensus_raft'
-tag = 'v6.6.3'
+image = "consensus_raft"
+tag = "v6.6.4"
 
 [[micro_service_list]]
-image = 'executor_evm'
-tag = 'v6.6.3'
+image = "executor_evm"
+tag = "v6.6.4"
 
 [[micro_service_list]]
-image = 'storage_rocksdb'
-tag = 'v6.6.3'
+image = "storage_rocksdb"
+tag = "v6.6.4"
 
 [[micro_service_list]]
-image = 'controller'
-tag = 'v6.6.3'
+image = "controller"
+tag = "v6.6.4"
 
 [[micro_service_list]]
-image = 'crypto_sm'
-tag = 'v6.6.3'
+image = "crypto_sm"
+tag = "v6.6.4"
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node0'
-host = 'localhost'
+cluster = "k8s"
+domain = "node0"
+host = "localhost"
 port = 40000
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node1'
-host = 'localhost'
+cluster = "k8s"
+domain = "node1"
+host = "localhost"
 port = 40001
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node2'
-host = 'localhost'
+cluster = "k8s"
+domain = "node2"
+host = "localhost"
 port = 40002
 svc_port = 40000
 
 [[node_network_address_list]]
-cluster = 'k8s'
-domain = 'node3'
-host = 'localhost'
+cluster = "k8s"
+domain = "node3"
+host = "localhost"
 port = 40003
 svc_port = 40000
 
 [genesis_block]
-prevhash = '0x0000000000000000000000000000000000000000000000000000000000000000'
-timestamp = 1672284552735
+prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
+timestamp = 1677225133114
 
 [system_config]
-admin = '9bab5858df4a9e84ff3958884a01a4fce5e07edb'
+admin = "9bab5858df4a9e84ff3958884a01a4fce5e07edb"
 block_interval = 3
 block_limit = 100
-chain_id = 'c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466'
+chain_id = "c57bf69f92e8a473ae58582fbf3dc547e1e78c3442bb4bf3313b7005b4163466"
 quota_limit = 1073741824
 validators = [
-    'b5fb8f3afe21956fe64ddc7b226e4663aa65b933',
-    'f76b5aa185a214f489c4a9dee47472712ff6d968',
-    '0b6227e744854b3fa4593e657a19a3cf56605750',
+    "26610b92a90523eaae3fa4903a167e1135f39153",
+    "99a82d112940cfffa95182921fe6e8a1fd8b8539",
+    "ea0345ad8c8c1c5278b52fb2e8042c9442ed1a90",
 ]
 version = 0
 
