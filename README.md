@@ -191,41 +191,115 @@ bash -x ./upgrade/upgrade.sh
 
 然后重新部署即可。
 
+### 备份前的准备
+- v2版本的operator内部使用了restic作为备份工具，该工具需要提供密码作为访问仓库使用，可以使用如下命令进行创建：
+```shell
+python script/v2/prepare.py create_backup_secret --name backup-repo --password 123456
+```
+- 如果你想将备份保存至对象存储，需要提供对象存储的访问凭证，可以使用如下命令进行创建：
+```shell
+python script/v2/prepare.py create_minio_credentials --name minio-credentials --access_key minio --secret_key minio123
+```
+
 ### 备份节点数据
 
-```bash
-python3 ./script/backup.py -n node4
-```
+- v1 
+    ```bash
+    python3 ./script/v1/backup.py -n node4
+    ```
+- v2
+    ```bash
+    # 对node0节点做本地全备
+    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type local
+  
+    # 对node0节点做本地全备（提供已存在的pvc）
+    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
+    
+    # 对node0节点做远程全备（备份至Minio）
+    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
+    ```
+  
 
 ### 从备份恢复节点数据
 
-```bash
-python3 ./script/restore.py -n node0 -m backup
-```
+- v1
+  ```bash
+  python3 ./script/v1/restore.py -n node0 -m backup
+  ```
+- v2
+  ```shell
+  # 对node0节点做本地恢复
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local
+  
+  # 对node0节点做本地恢复（提供已存在的pvc）
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
+  
+  # 对node0节点进行恢复（从Minio恢复）
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
+  ```
 
 ### 消块
 
-```bash
-python3 ./script/block_height_fallback.py -n node0 -b 100
-```
+- v1
+  ```bash
+  python3 ./script/v1/block_height_fallback.py -n node0 -b 100
+  ```
+  
+- v2
+  ```shell
+  python3 ./script/v2/block_height_fallback.py -n node0 -b 100
+  ```
 
 ### 快照
 
-```bash
-python3 ./script/snapshot.py -n node4 -b 200
-```
+- v1
+  ```bash
+  python3 ./script/v1/snapshot.py -n node4 -b 200
+  ```
+  
+- v2
+  
+  **v2版本的快照称之为状态备份，与备份CRD做在一起，并通过backup_type进行区分**
+  ```bash
+  # 对node0节点做本地全备
+  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type local --block_height 50
+  
+  # 对node0节点做本地全备（提供已存在的pvc）
+  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type local-with-pvc --block_height 50 --pvc local-pvc --mount_path /bak/node0
+  
+  # 对node0节点做远程全备（备份至Minio）
+  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type s3 --block_height 50 --endpoint 192.168.10.120:30289 --bucket_name sla
+  ```
 
 ### 从快照恢复节点数据
 
-```bash
-python3 ./script/restore.py -n node0 -m snapshot
-```
+- v1
+  ```bash
+  python3 ./script/v1/restore.py -n node0 -m snapshot
+  ```
+- v2
+  ```bash
+  # 对node0节点做本地恢复
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local
+  
+  # 对node0节点做本地恢复（提供已存在的pvc）
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
+  
+  # 对node0节点进行恢复（从Minio恢复）
+  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
+  ```
 
 ### 守护节点切换
 
-```bash
-python3 ./script/switchover.py -s node0 -d node4
-```
+- v1
+  ```bash
+  python3 ./script/v1/switchover.py -s node0 -d node4
+  ```
+
+- v2
+  ```bash
+  python3 ./script/v2/switchover.py -s node0 -d node4
+  ```
 
 ### 节点操作
 
