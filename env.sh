@@ -20,5 +20,5 @@ export SC=nas-client-provisioner
 # 设置要使用的NameSpace
 export NAME_SPACE=cita-cloud-sla
 
-# 设置jager agent endpoint
+# 设置jager agent endpoint，如果不使用链路追踪功能则不设置该变量
 export JAEGER_AGENT_ENDPOINT=jaeger.tracing.svc:6831
