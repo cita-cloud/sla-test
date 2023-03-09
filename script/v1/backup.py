@@ -2,11 +2,15 @@
 # -*- coding:utf-8 -*-
 # pylint: disable=missing-docstring
 import argparse
+import os
+import sys
 
 from kubernetes import client, config
 
-from logger import logger
-from util import wait_job_complete, get_env
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from utils.logger import logger
+from utils.util import wait_job_complete, get_env
 
 
 class Backup(object):

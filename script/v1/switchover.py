@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 import argparse
+import os
+import sys
 
 from kubernetes import client, config
 
-from util import wait_job_complete, logger, get_env
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from utils.logger import logger
+from utils.util import wait_job_complete, get_env
 
 
 class Switchover(object):
