@@ -71,6 +71,7 @@ port = 40000
 protocol = "quic"
 
 [network_zenoh.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "network"
@@ -84,6 +85,7 @@ metrics_port = 60001
 network_port = 50000
 
 [consensus_overlord.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "consensus"
@@ -95,6 +97,7 @@ executor_port = 50002
 metrics_port = 60002
 
 [executor_evm.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "executor"
@@ -107,6 +110,7 @@ metrics_port = 60003
 storage_port = 50003
 
 [storage_rocksdb.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "storage"
@@ -144,6 +148,7 @@ storage_port = 50003
 validator_address = "/mnt/validator_address"
 
 [controller.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "controller"
@@ -155,6 +160,7 @@ enable_metrics = true
 metrics_port = 60005
 
 [crypto_sm.log_config]
+agent_endpoint = "jaeger.tracing.svc:6831"
 filter = "info"
 max_level = "info"
 service_name = "crypto"
