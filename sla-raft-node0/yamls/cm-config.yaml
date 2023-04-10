@@ -70,7 +70,6 @@ data:
     protocol = "quic"
 
     [network_zenoh.log_config]
-    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "network"
@@ -90,7 +89,6 @@ data:
     metrics_port = 60002
 
     [executor_evm.log_config]
-    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "executor"
@@ -103,7 +101,6 @@ data:
     storage_port = 50003
 
     [storage_rocksdb.log_config]
-    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "storage"
@@ -140,7 +137,6 @@ data:
     validator_address = "/mnt/validator_address"
 
     [controller.log_config]
-    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "controller"
@@ -152,7 +148,6 @@ data:
     metrics_port = 60005
 
     [crypto_sm.log_config]
-    agent_endpoint = "jaeger.tracing.svc:6831"
     filter = "info"
     max_level = "info"
     service_name = "crypto"
