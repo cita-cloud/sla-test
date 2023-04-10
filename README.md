@@ -184,9 +184,8 @@ source ./env.sh
 升级配置：
 
 ```bash
-# 设置要升级的新版本版本号
-export RELEASE_VERSION=v6.6.4
-bash -x ./upgrade/upgrade.sh
+# 修改env.sh，设置要升级的新版本版本号
+bash -x upgrade.sh
 ```
 
 然后重新部署即可。

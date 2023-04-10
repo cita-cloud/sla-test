@@ -1,7 +1,6 @@
 account = "99a82d112940cfffa95182921fe6e8a1fd8b8539"
 enable_metrics = true
 is_danger = false
-jaeger_agent_endpoint = "jaeger.tracing.svc:6831"
 log_level = "info"
 network_listen_port = 40000
 
