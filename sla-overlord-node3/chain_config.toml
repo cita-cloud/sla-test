@@ -2,27 +2,27 @@ stage = "Finalize"
 
 [[micro_service_list]]
 image = "network_zenoh"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[micro_service_list]]
 image = "consensus_overlord"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[micro_service_list]]
 image = "executor_evm"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[micro_service_list]]
 image = "storage_rocksdb"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[micro_service_list]]
 image = "controller"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[micro_service_list]]
 image = "crypto_sm"
-tag = "v6.6.5-beta1"
+tag = "v6.6.5-beta2"
 
 [[node_network_address_list]]
 cluster = "k8s"
