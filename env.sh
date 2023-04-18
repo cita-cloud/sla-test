@@ -16,7 +16,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.6.5-beta2
+export RELEASE_VERSION=v6.6.5
 
 # 设置链的类型和名称
 # export CHIAN_TYPE=raft
