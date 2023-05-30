@@ -30,22 +30,22 @@ then
     # 设置节点列表，共识节点和只读节点都在内
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-nodelist --chain-name $CHAIN_NAME --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s,localhost:40004:node4:k8s
 
-
     # 重新初始化所有节点，前四个为共识节点，最后一个为只读节点
-    if [ ! $JAEGER_AGENT_ENDPOINT ]
+    EXTRA_ARGS=""
+    if [ $JAEGER_AGENT_ENDPOINT ]
     then
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node4 --account $(python3 -c 'import toml;import os; config = "{}-node4/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-    else
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node4 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node4/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+        EXTRA_ARGS="$EXTRA_ARGS --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT"
     fi
+    if [ $S3_ENDPOINT ] && [ $S3_ACCESS_KEY ] && [ $S3_SECRET_KEY ] && [ $S3_BUCKET_NAME ]
+    then
+        EXTRA_ARGS="$EXTRA_ARGS --access-key-id $S3_ACCESS_KEY --secret-access-key $S3_SECRET_KEY --s3-endpoint $S3_ENDPOINT --s3-bucket $S3_BUCKET_NAME"
+    fi
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node4 --account $(python3 -c 'import toml;import os; config = "{}-node4/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+
     # 生成所有节点配置文件
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node0
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node1
@@ -66,20 +66,22 @@ then
     # 设置节点列表，共识节点和只读节点都在内
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-nodelist --chain-name $CHAIN_NAME --nodelist localhost:40000:node0:k8s,localhost:40001:node1:k8s,localhost:40002:node2:k8s,localhost:40003:node3:k8s
 
-
     # 重新初始化所有节点，前四个为共识节点，最后一个为只读节点
-    if [ ! $JAEGER_AGENT_ENDPOINT ]
+    EXTRA_ARGS=""
+    if [ $JAEGER_AGENT_ENDPOINT ]
     then
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-    else
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
-        docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);')
+        EXTRA_ARGS="$EXTRA_ARGS --jaeger-agent-endpoint $JAEGER_AGENT_ENDPOINT"
     fi
+    if [ $S3_ENDPOINT ] && [ $S3_ACCESS_KEY ] && [ $S3_SECRET_KEY ] && [ $S3_BUCKET_NAME ]
+    then
+        EXTRA_ARGS="$EXTRA_ARGS --access-key-id $S3_ACCESS_KEY --secret-access-key $S3_SECRET_KEY --s3-endpoint $S3_ENDPOINT --s3-bucket $S3_BUCKET_NAME"
+    fi
+
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node0 --account $(python3 -c 'import toml;import os; config = "{}-node0/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node1 --account $(python3 -c 'import toml;import os; config = "{}-node1/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node2 --account $(python3 -c 'import toml;import os; config = "{}-node2/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+    docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-node --chain-name $CHAIN_NAME --domain node3 --account $(python3 -c 'import toml;import os; config = "{}-node3/node_config.toml".format(os.getenv("CHAIN_NAME")); print (toml.load(config)["account"]);') $EXTRA_ARGS
+
     # 生成所有节点配置文件
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node0
     docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-node --chain-name $CHAIN_NAME --domain node1
