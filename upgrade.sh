@@ -14,7 +14,7 @@ ADMIN=$(python3 -c 'import toml;import os; config = "{}/chain_config.toml".forma
 VALIDATORS=$(python3 -c 'import toml;import os; config = "{}/chain_config.toml".format(os.getenv("CHAIN_NAME")); print (",".join(toml.load(config)["system_config"]["validators"]));')
 
 # 初始化链级配置，chain_id和timestamp跟升级前保持一致
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-chain-config --chain-name $CHAIN_NAME --chain_id $CHAIN_ID --consensus_image consensus_$CHIAN_TYPE --consensus_tag $RELEASE_VERSION --controller_tag $RELEASE_VERSION --crypto_tag $RELEASE_VERSION --executor_tag $RELEASE_VERSION --network_tag $RELEASE_VERSION --storage_tag $RELEASE_VERSION --timestamp $TIMESTAMP
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config init-chain-config --chain-name $CHAIN_NAME --chain_id $CHAIN_ID --consensus_image consensus_$CHIAN_TYPE --consensus_tag $RELEASE_VERSION --controller_tag $RELEASE_VERSION --executor_tag $RELEASE_VERSION --network_tag $RELEASE_VERSION --storage_tag $RELEASE_VERSION --timestamp $TIMESTAMP
 
 # 设置admin，与升级前保持一致
 docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config set-admin --chain-name $CHAIN_NAME --admin $ADMIN

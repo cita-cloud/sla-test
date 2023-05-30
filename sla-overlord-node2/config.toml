@@ -99,14 +99,19 @@ filter = "info"
 max_level = "info"
 service_name = "executor"
 
-[storage_rocksdb]
-crypto_port = 50005
+[storage_opendal]
 domain = "sla-overlord-node2"
 enable_metrics = true
 metrics_port = 60003
 storage_port = 50003
 
-[storage_rocksdb.log_config]
+[storage_opendal.cloud_storage]
+access_key_id = ""
+bucket = ""
+endpoint = ""
+secret_access_key = ""
+
+[storage_opendal.log_config]
 filter = "info"
 max_level = "info"
 service_name = "storage"
@@ -132,7 +137,6 @@ version = 0
 [controller]
 consensus_port = 50001
 controller_port = 50004
-crypto_port = 50005
 domain = "sla-overlord-node2"
 enable_metrics = true
 executor_port = 50002
@@ -147,15 +151,4 @@ validator_address = "/mnt/validator_address"
 filter = "info"
 max_level = "info"
 service_name = "controller"
-
-[crypto_sm]
-crypto_port = 50005
-domain = "sla-overlord-node2"
-enable_metrics = true
-metrics_port = 60005
-
-[crypto_sm.log_config]
-filter = "info"
-max_level = "info"
-service_name = "crypto"
 
