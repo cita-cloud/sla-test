@@ -25,7 +25,8 @@ class Restore(object):
                           action="StopAndStart",
                           pull_policy="IfNotPresent",
                           ttl=300,
-                          pod_affinity_flag=True):
+                          pod_affinity_flag=True,
+                          delete_consensus_data=False):
         resource_body = {
             "apiVersion": "citacloud.rivtower.com/v1",
             "kind": "Restore",
@@ -40,6 +41,7 @@ class Restore(object):
                 "image": image,
                 "ttlSecondsAfterFinished": ttl,
                 "podAffinityFlag": pod_affinity_flag,
+                "deleteConsensusData": delete_consensus_data,
             },
         }
         # create a cluster scoped resource
@@ -58,7 +60,8 @@ class Restore(object):
                             action="StopAndStart",
                             pull_policy="IfNotPresent",
                             ttl=30,
-                            pod_affinity_flag=True):
+                            pod_affinity_flag=True,
+                            delete_consensus_data=False):
         resource_body = {
             "apiVersion": "citacloud.rivtower.com/v1",
             "kind": "Restore",
@@ -73,6 +76,7 @@ class Restore(object):
                 "image": image,
                 "ttlSecondsAfterFinished": ttl,
                 "podAffinityFlag": pod_affinity_flag,
+                "deleteConsensusData": delete_consensus_data,
             },
         }
         # create a cluster scoped resource
@@ -108,9 +112,12 @@ if __name__ == "__main__":
     parser.add_argument('--method', '-m', help='restore from', required=True, type=str,
                         choices=['backup', 'snapshot'])
     parser.add_argument('--node_domain', '-n', help="the node's domain name", required=True, type=str)
-    parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.3", type=str)
+    parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.7", type=str)
     parser.add_argument('--pull_policy', '-p', help="image pull policy", default="Always", type=str,
                         choices=['Always', 'IfNotPresent'])
+    parser.add_argument('--action', '-a', help="action fo restore", default="StopAndStart", type=str,
+                        choices=['StopAndStart', 'Direct'])
+    parser.add_argument('--delete_consensus_data', '-d', help="is need delete consensus data fo restore", action='store_true')
     args = parser.parse_args()
 
     restore = Restore(name="{}-restore".format(chain_name), namespace=namespace)
@@ -125,7 +132,9 @@ if __name__ == "__main__":
                                       node=node,
                                       backup="{}-backup".format(chain_name),
                                       image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
-                                      pull_policy=args.pull_policy)
+                                      pull_policy=args.pull_policy,
+                                      action=args.action,
+                                      delete_consensus_data=args.delete_consensus_data)
         elif args.method == "snapshot":
             # create restore job for snapshot
             logger.info("create restore job -> [chain: {}, node: {}, restore from: {}]...".format(chain_name, node,
@@ -134,7 +143,9 @@ if __name__ == "__main__":
                                         node=node,
                                         snapshot="{}-snapshot".format(chain_name),
                                         image="{}/{}/cita-node-job:{}".format(docker_registry, docker_repo, args.tag),
-                                        pull_policy=args.pull_policy)
+                                        pull_policy=args.pull_policy,
+                                        action=args.action,
+                                        delete_consensus_data=args.delete_consensus_data)
         else:
             raise Exception("invalid restore method")
         status = restore.wait_job_complete()
