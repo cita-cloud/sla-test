@@ -103,7 +103,9 @@ data:
     access_key_id = ""
     bucket = ""
     endpoint = ""
+    root = ""
     secret_access_key = ""
+    service_type = ""
 
     [storage_opendal.log_config]
     filter = "info"

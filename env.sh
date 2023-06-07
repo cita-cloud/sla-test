@@ -12,6 +12,8 @@ unset S3_ENDPOINT
 unset S3_ACCESS_KEY
 unset S3_SECRET_KEY
 unset S3_BUCKET_NAME
+unset S3_ROOT
+unset SERVICE_TYPE
 
 # 设置镜像仓库
 # export DOCKER_REGISTRY=docker.io
@@ -20,7 +22,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.0-beta1
+export RELEASE_VERSION=v6.7.0-beta2
 
 # 设置链的类型和名称
 # export CHIAN_TYPE=raft
@@ -41,3 +43,6 @@ export S3_ENDPOINT=
 export S3_ACCESS_KEY=
 export S3_SECRET_KEY=
 export S3_BUCKET_NAME=
+export S3_ROOT=
+# s3/oss(aliyun)/obs(huawei)/cos(tencent)/azblob(azure)
+export SERVICE_TYPE=

@@ -8,7 +8,9 @@ network_listen_port = 40000
 access_key_id = ""
 bucket = ""
 endpoint = ""
+root = ""
 secret_access_key = ""
+service_type = ""
 
 [grpc_ports]
 consensus_port = 50001
