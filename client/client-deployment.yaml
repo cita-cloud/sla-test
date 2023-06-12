@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 data:
   client.toml: |+
-    sender_interval = 30
+    sender_interval = 1
     checker_interval = 10
     storage_path = "record_db"
     log_file = "/data/log/client-log4rs.yaml"
