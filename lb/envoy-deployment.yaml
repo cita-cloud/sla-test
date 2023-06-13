@@ -176,7 +176,7 @@ data:
             unhealthy_threshold : 1
             healthy_threshold: 1
             timeout: 0.5s
-            interval: 0.5s
+            interval: 2s
             interval_jitter: 0.5s
         - name: service_executor
           type: STRICT_DNS
@@ -198,5 +198,5 @@ data:
             unhealthy_threshold : 1
             healthy_threshold: 1
             timeout: 0.5s
-            interval: 0.5s
+            interval: 2s
             interval_jitter: 0.5s
