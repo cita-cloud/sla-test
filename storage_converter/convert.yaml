@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${CHAIN_NAME}-converter
+spec:
+  containers:
+  # 镜像名
+  - image: registry.devops.rivtower.com/cita-cloud/converter:latest
+    name: converter
+    imagePullPolicy: Always
+    command: ["sleep"]
+    args: ["infinity"]
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: backup-pv-storage
+  volumes:
+    - name: backup-pv-storage
+      persistentVolumeClaim:
+        # 备份pvc
+        claimName: ${CHAIN_NAME}-backup

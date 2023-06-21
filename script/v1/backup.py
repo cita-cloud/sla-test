@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Perform backup for chain node')
     parser.add_argument('--node_domain', '-n', help="the node's domain name", required=True, type=str)
-    parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.3", type=str)
+    parser.add_argument('--tag', '-t', help="cita node job image tag", default="v0.0.7", type=str)
     parser.add_argument('--pull_policy', '-p', help="image pull policy", default="Always", type=str,
                         choices=['Always', 'IfNotPresent'])
     args = parser.parse_args()
