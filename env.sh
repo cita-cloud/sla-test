@@ -6,6 +6,7 @@ unset RELEASE_VERSION
 unset CHIAN_TYPE
 unset CHAIN_NAME
 unset SC
+unset PVC_MODE
 unset NAME_SPACE
 unset JAEGER_AGENT_ENDPOINT
 unset S3_ENDPOINT
@@ -22,15 +23,16 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.0
+export RELEASE_VERSION=v6.7.1-beta1
 
 # 设置链的类型和名称
 # export CHIAN_TYPE=raft
 export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
-# 设置基础环境的Storage Class
+# 设置基础环境的Storage Class和PVC access mode
 export SC=nas-client-provisioner
+export PVC_MODE=ReadWriteMany
 
 # 设置要使用的NameSpace
 export NAME_SPACE=cita-cloud-sla
