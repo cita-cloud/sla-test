@@ -18,7 +18,7 @@ pip install kubernetes tenacity
 
 ## 部署
 
-当前版本为v6.6.4。
+当前版本为v6.7.1。
 
 ### 生成链配置
 
@@ -28,6 +28,22 @@ pip install kubernetes tenacity
 $ cat ./env.sh
 #!/bin/bash
 
+unset DOCKER_REGISTRY
+unset DOCKER_REPO
+unset RELEASE_VERSION
+unset CHIAN_TYPE
+unset CHAIN_NAME
+unset SC
+unset PVC_MODE
+unset NAME_SPACE
+unset JAEGER_AGENT_ENDPOINT
+unset S3_ENDPOINT
+unset S3_ACCESS_KEY
+unset S3_SECRET_KEY
+unset S3_BUCKET_NAME
+unset S3_ROOT
+unset SERVICE_TYPE
+
 # 设置镜像仓库
 # export DOCKER_REGISTRY=docker.io
 # export DOCKER_REPO=citacloud
@@ -35,15 +51,16 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.6.4
+export RELEASE_VERSION=v6.7.1
 
 # 设置链的类型和名称
 # export CHIAN_TYPE=raft
 export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
-# 设置基础环境的Storage Class
+# 设置基础环境的Storage Class和PVC access mode
 export SC=nas-client-provisioner
+export PVC_MODE=ReadWriteMany
 
 # 设置要使用的NameSpace
 export NAME_SPACE=cita-cloud-sla
