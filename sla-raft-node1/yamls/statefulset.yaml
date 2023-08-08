@@ -238,8 +238,8 @@ spec:
       name: datadir
     spec:
       accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
       resources:
         requests:
           storage: 10Gi
-      storageClassName: nas-client-provisioner
+      storageClassName: csi-disk

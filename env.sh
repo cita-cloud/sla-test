@@ -31,8 +31,8 @@ export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class和PVC access mode
-export SC=nas-client-provisioner
-export PVC_MODE=ReadWriteMany
+export SC=csi-disk
+export PVC_MODE=ReadWriteOnce
 
 # 设置要使用的NameSpace
 export NAME_SPACE=cita-cloud-sla
