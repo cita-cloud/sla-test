@@ -41,7 +41,7 @@ spec:
         livenessProbe:
           exec:
             command:
-            - grpc_health_probe
+            - grpc-health-probe
             - -addr=127.0.0.1:50000
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -82,7 +82,7 @@ spec:
         livenessProbe:
           exec:
             command:
-            - grpc_health_probe
+            - grpc-health-probe
             - -addr=127.0.0.1:50001
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -118,7 +118,7 @@ spec:
         livenessProbe:
           exec:
             command:
-            - grpc_health_probe
+            - grpc-health-probe
             - -addr=127.0.0.1:50002
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -152,7 +152,7 @@ spec:
         livenessProbe:
           exec:
             command:
-            - grpc_health_probe
+            - grpc-health-probe
             - -addr=127.0.0.1:50003
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -188,7 +188,7 @@ spec:
         livenessProbe:
           exec:
             command:
-            - grpc_health_probe
+            - grpc-health-probe
             - -addr=127.0.0.1:50004
           initialDelaySeconds: 60
           periodSeconds: 10
@@ -239,8 +239,8 @@ spec:
       name: datadir
     spec:
       accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
       resources:
         requests:
           storage: 10Gi
-      storageClassName: nas-client-provisioner
+      storageClassName: csi-disk
