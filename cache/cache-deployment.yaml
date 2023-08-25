@@ -148,6 +148,8 @@ spec:
               cpu: 10m
               memory: 32Mi
           volumeMounts:
+            - mountPath: /data
+              name: datadir
             - mountPath: /etc/cita-cloud/config
               name: cache-config
           workingDir: /data
