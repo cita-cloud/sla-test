@@ -36,7 +36,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.1
+        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.2-beta.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -77,7 +77,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/consensus_overlord:v6.7.1
+        image: registry.devops.rivtower.com/cita-cloud/consensus_overlord:v6.7.2-beta.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -113,7 +113,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.1
+        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.2-beta.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -147,7 +147,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.1
+        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.2-beta.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -183,7 +183,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/controller:v6.7.1
+        image: registry.devops.rivtower.com/cita-cloud/controller:v6.7.2-beta.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
