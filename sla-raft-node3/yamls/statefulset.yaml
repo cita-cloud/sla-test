@@ -36,7 +36,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.2-beta.1
+        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.2-beta.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -76,7 +76,7 @@ spec:
         - -c
         - /etc/cita-cloud/config/config.toml
         - --stdout
-        image: registry.devops.rivtower.com/cita-cloud/consensus_raft:v6.7.2-beta.1
+        image: registry.devops.rivtower.com/cita-cloud/consensus_raft:v6.7.2-beta.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -112,7 +112,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.2-beta.1
+        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.2-beta.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -146,7 +146,7 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.2-beta.1
+        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.2-beta.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -182,7 +182,7 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/controller:v6.7.2-beta.1
+        image: registry.devops.rivtower.com/cita-cloud/controller_hsm:v6.7.2-beta.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -213,10 +213,6 @@ spec:
         - mountPath: /etc/localtime
           name: node-localtime
         workingDir: /data
-      hostAliases:
-      - hostnames:
-        - sla-raft-node3
-        ip: 0.0.0.0
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000

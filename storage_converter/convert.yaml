@@ -7,7 +7,7 @@ spec:
   # 镜像名
   - image: registry.devops.rivtower.com/cita-cloud/converter:latest
     name: converter
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     command: ["sleep"]
     args: ["infinity"]
     volumeMounts:

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/chain-name: sla-cita
+    app.kubernetes.io/chain-node: sla-cita-node2
+  name: sla-cita-node2
+spec:
+  ports:
+  - name: network
+    port: 4000
+    protocol: TCP
+    targetPort: 4000
+  - name: jsonrpc
+    port: 1337
+    protocol: TCP
+    targetPort: 1337
+  selector:
+    app.kubernetes.io/chain-name: sla-cita
+    app.kubernetes.io/chain-node: sla-cita-node2
+  type: ClusterIP

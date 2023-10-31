@@ -18,7 +18,7 @@ pip install kubernetes tenacity
 
 ## 部署
 
-当前版本为v6.7.1。
+当前版本为v6.7.2。
 
 ### 生成链配置
 
@@ -51,7 +51,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.2-beta.1
+export RELEASE_VERSION=v6.7.2-beta.2
 
 # 设置链的类型和名称
 # export CHIAN_TYPE=raft
