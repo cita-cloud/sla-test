@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/chain-name: sla-cita
+    app.kubernetes.io/chain-node: sla-cita-node2
+  name: sla-cita-node2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/chain-name: sla-cita
+      app.kubernetes.io/chain-node: sla-cita-node2
+  serviceName: ''
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/chain-name: sla-cita
+        app.kubernetes.io/chain-node: sla-cita-node2
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/chain-name
+                  operator: In
+                  values:
+                  - sla-cita
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      initContainers:
+        - name: init-container-0
+          image: registry.cn-hangzhou.aliyuncs.com/citahub/cita-test:sm3_3f0ee6
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/bash", "-c", "[ -e 'sla-cita/2/privkey' ] && echo 'chain config exist, exit now' || cita bebop create --stdout --super_admin 0x74812688b1901e20a7fb8da39b41471c51688f17 --nodes sla-cita-node0:4000,sla-cita-node1:4000,sla-cita-node2:4000,sla-cita-node3:4000 --chain_name sla-cita --timestamp 1698301303761 --authorities 0x07202ce67763f94bd96fe2048c3ad7bb0dca12cb,0xccdbffc1a3b3e391dc5ff580c850e560fca92281,0xfd79a62f4382f1f756e542e0bd5707144e93d4d5,0x2e86dc951b278ea482ceb347f8ac4b79a009cc98 --jsonrpc_port_list 1337,1337,1337,1337 && echo '0x9e1cd0b218a9afa5e0f16ff9f0de4c467e356cae1bea416609c44572c456321b' > sla-cita/2/privkey && echo -n 'MDEgMS44LjAgMiAweDBiYzFiY2FmZjNjZjRlZjFiYjFjMmQ3YmIyNGI4ODhlNDc3Y2ZiN2JkYTdmMDhkZjRmNDgzY2ViMmQ0MDVlZjUgMjAyMy0xMS0xNFQxMToxMjo0NVogMzAyMy0wMy0xN1QxMToxMjo0NVrvC+x4+ZefSJkVURlViMCbJbSwuSyh2vup84RX+GC2tmDznpqyRuPJgHUv9AFQAxjcqmdmQp7oie8Z9WC1mKXKWt+29K4ykaj1ZJ8NyfwZLjsc8SrCUBvK1EPQig+QlZwA' > sla-cita/2/cita.lic "]
+          volumeMounts:
+          - mountPath: /opt/cita-run
+            name: datadir
+          workingDir: /opt/cita-run
+      containers:
+      - command: ["/bin/bash", "-c", "cita bebop start sla-cita/2 && sleep infinity"]
+        image: registry.cn-hangzhou.aliyuncs.com/citahub/cita-test:sm3_3f0ee6
+        imagePullPolicy: IfNotPresent
+        name: cita
+        ports:
+        - containerPort: 4000
+          name: p2p
+          protocol: TCP
+        - containerPort: 1337
+          name: jsonrpc
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 8192Mi
+          requests:
+            cpu: 1000m
+            memory: 2048Mi
+        volumeMounts:
+        - mountPath: /opt/cita-run
+          name: datadir
+        workingDir: /opt/cita-run
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: datadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: csi-disk
