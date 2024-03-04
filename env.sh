@@ -24,7 +24,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=latest
+export RELEASE_VERSION=v6.7.3-beta1
 
 # 设置链的共识类型和链的名称
 # raft or overlord
@@ -32,11 +32,11 @@ export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class和PVC access mode
-export SC=local-path
+export SC=csi-disk
 export PVC_MODE=ReadWriteOnce
 
 # 设置要使用的NameSpace
-export NAME_SPACE=cita
+export NAME_SPACE=cita-cloud-sla
 
 # 是否开启交易持久化功能，如果开启则设置为1，否则不设置
 export ENABLE_TX_PERSISTENCE=
@@ -54,3 +54,4 @@ export S3_REGION=
 export S3_ROOT=
 # s3/oss(aliyun)/obs(huawei)/cos(tencent)/azblob(azure)
 export SERVICE_TYPE=
+

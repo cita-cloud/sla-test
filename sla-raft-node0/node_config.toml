@@ -1,5 +1,6 @@
 account = "26610b92a90523eaae3fa4903a167e1135f39153"
 enable_metrics = true
+enable_tx_persistence = false
 is_danger = false
 log_level = "info"
 network_listen_port = 40000
@@ -8,6 +9,7 @@ network_listen_port = 40000
 access_key_id = ""
 bucket = ""
 endpoint = ""
+region = ""
 root = ""
 secret_access_key = ""
 service_type = ""

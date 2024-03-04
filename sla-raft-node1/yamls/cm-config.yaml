@@ -103,6 +103,7 @@ data:
     access_key_id = ""
     bucket = ""
     endpoint = ""
+    region = ""
     root = ""
     secret_access_key = ""
     service_type = ""
@@ -140,6 +141,7 @@ data:
     network_port = 50000
     node_address = "/mnt/node_address"
     storage_port = 50003
+    tx_persistence = false
     validator_address = "/mnt/validator_address"
 
     [controller.log_config]
