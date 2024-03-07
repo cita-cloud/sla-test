@@ -25,28 +25,28 @@ cluster = "k8s"
 domain = "node0"
 host = "localhost"
 port = 40000
-svc_port = 40000
+name_space = "default"
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node1"
 host = "localhost"
 port = 40001
-svc_port = 40000
+name_space = "default"
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node2"
 host = "localhost"
 port = 40002
-svc_port = 40000
+name_space = "default"
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node3"
 host = "localhost"
 port = 40003
-svc_port = 40000
+name_space = "default"
 
 [genesis_block]
 prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"
