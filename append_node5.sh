@@ -5,10 +5,6 @@ set -e
 # 设置环境变量
 source ./env.sh
 
-# 链级配置目录下的私钥没有上传到仓库
-# 需要从节点目录下恢复
-cp $CHAIN_NAME-node0/ca_cert/key.pem $CHAIN_NAME/ca_cert/
-
 # init-node的一些额外的参数
 EXTRA_ARGS=""
 if [ $ENABLE_TX_PERSISTENCE ]
