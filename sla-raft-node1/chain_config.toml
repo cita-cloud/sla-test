@@ -2,51 +2,51 @@ stage = "Finalize"
 
 [[micro_service_list]]
 image = "network_zenoh"
-tag = "v6.7.3-beta1"
+tag = "v6.7.3-beta2"
 
 [[micro_service_list]]
 image = "consensus_raft"
-tag = "v6.7.3-beta1"
+tag = "v6.7.3-beta2"
 
 [[micro_service_list]]
 image = "executor_evm"
-tag = "v6.7.3-beta1"
+tag = "v6.7.3-beta2"
 
 [[micro_service_list]]
 image = "storage_opendal"
-tag = "v6.7.3-beta1"
+tag = "v6.7.3-beta2"
 
 [[micro_service_list]]
 image = "controller_hsm"
-tag = "v6.7.3-beta1"
+tag = "v6.7.3-beta2"
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node0"
 host = "localhost"
+name_space = "cita-cloud-sla"
 port = 40000
-svc_port = 40000
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node1"
 host = "localhost"
+name_space = "cita-cloud-sla"
 port = 40001
-svc_port = 40000
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node2"
 host = "localhost"
+name_space = "cita-cloud-sla"
 port = 40002
-svc_port = 40000
 
 [[node_network_address_list]]
 cluster = "k8s"
 domain = "node3"
 host = "localhost"
+name_space = "cita-cloud-sla"
 port = 40003
-svc_port = 40000
 
 [genesis_block]
 prevhash = "0x0000000000000000000000000000000000000000000000000000000000000000"

@@ -24,7 +24,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.3-beta1
+export RELEASE_VERSION=v6.7.3-beta2
 
 # 设置链的共识类型和链的名称
 # raft or overlord
