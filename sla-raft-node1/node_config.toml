@@ -1,13 +1,14 @@
 account = "99a82d112940cfffa95182921fe6e8a1fd8b8539"
 enable_metrics = true
+enable_tx_persistence = false
 is_danger = false
 log_level = "info"
-network_listen_port = 40000
 
 [cloud_storage]
 access_key_id = ""
 bucket = ""
 endpoint = ""
+region = ""
 root = ""
 secret_access_key = ""
 service_type = ""

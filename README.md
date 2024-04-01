@@ -8,17 +8,11 @@
 * [docker](https://docs.docker.com/engine/install/)
 * [python3](https://www.python.org/downloads/)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
-* [helm](https://helm.sh/docs/intro/install/)
 * [cloud-cli](https://github.com/cita-cloud/cloud-cli)
-* [cita-node-operator](https://github.com/cita-cloud/cita-node-operator)
-
-```bash
-pip install kubernetes tenacity
-```
 
 ## 部署
 
-当前版本为v6.7.2。
+当前版本为v6.7.3。
 
 ### 生成链配置
 
@@ -41,6 +35,7 @@ unset S3_ENDPOINT
 unset S3_ACCESS_KEY
 unset S3_SECRET_KEY
 unset S3_BUCKET_NAME
+unset S3_REGION
 unset S3_ROOT
 unset SERVICE_TYPE
 
@@ -51,22 +46,36 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.2
+export RELEASE_VERSION=latest
 
-# 设置链的类型和名称
-# export CHIAN_TYPE=raft
+# 设置链的共识类型和链的名称
+# raft or overlord
 export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class和PVC access mode
-export SC=nas-client-provisioner
-export PVC_MODE=ReadWriteMany
+export SC=local-path
+export PVC_MODE=ReadWriteOnce
 
 # 设置要使用的NameSpace
-export NAME_SPACE=cita-cloud-sla
+export NAME_SPACE=cita
+
+# 是否开启交易持久化功能，如果开启则设置为1，否则不设置
+export ENABLE_TX_PERSISTENCE=
 
 # 设置jager agent endpoint，如果不使用链路追踪功能则不设置该变量
-export JAEGER_AGENT_ENDPOINT=jaeger.tracing.svc:6831
+#export JAEGER_AGENT_ENDPOINT=jaeger.tracing.svc:6831
+
+# 设置S3相关的参数，用于storage_opendal第三层
+export S3_ENDPOINT=
+export S3_ACCESS_KEY=
+export S3_SECRET_KEY=
+export S3_BUCKET_NAME=
+# 通常opendal会通过endpoint自动获取region，如果是自建s3服务，自动获取不了的情况下才需要设置region
+export S3_REGION=
+export S3_ROOT=
+# s3/oss(aliyun)/obs(huawei)/cos(tencent)/azblob(azure)
+export SERVICE_TYPE=
 ```
 
 生成配置文件：
@@ -135,56 +144,6 @@ service "sla-overlord-node4" deleted
 statefulset.apps "sla-overlord-node4" deleted
 ```
 
-### 部署节点负载均衡
-
-```bash
-# 设置环境变量
-source ./env.sh
-envsubst < lb/envoy-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
-```
-
-负载均衡暴露到`$NAME_SPACE`命名空间下，名为`$CHAIN_NAME-envoy`的SVC，端口有：
-* 60004 - 链的RPC端口
-* 60002 - 链的Call端口
-* 9901  - envoy的管理端口
-
-### 部署缓存服务
-
-```bash
-# 设置环境变量
-source ./env.sh
-envsubst < cache/cache-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
-```
-
-缓存服务的端口暴露到`$NAME_SPACE`命名空间下，名为`$CHAIN_NAME-cache`的SVC，端口是8000。
-
-### 安装Operator
-
-后续运维操作需要依赖`cita-node-operator`。
-
-```bash
-# 设置环境变量
-source ./env.sh
-# 添加helm仓库
-helm repo add cita-node-operator https://cita-cloud.github.io/cita-node-operator
-# 部署operator
-helm install cita-node-operator cita-node-operator/cita-node-operator -n=$NAME_SPACE
-```
-
-## 常规测试
-
-### 部署测试
-
-```bash
-# 设置环境变量
-source ./env.sh
-envsubst < client/client-deployment.yaml | kubectl apply -n $NAME_SPACE -f -
-```
-
-采集结果的端口暴露到`$NAME_SPACE`命名空间下，名为`$CHAIN_NAME-sla-test-client`的SVC，端口是61616。
-
-### 查看结果
-
 ## 运维测试
 
 操作前要先设置环境变量：
@@ -207,115 +166,211 @@ bash -x upgrade.sh
 
 然后重新部署即可。
 
-### 备份前的准备
-- v2版本的operator内部使用了restic作为备份工具，该工具需要提供密码作为访问仓库使用，可以使用如下命令进行创建：
-```shell
-python script/v2/prepare.py create_backup_secret --name backup-repo --password 123456
+### 回滚节点
+
+替换节点容器镜像为`cloud-op`。
+```sehll
+kubectl patch sts sla-overlord-node4 -n $NAME_SPACE --type json --patch '
+[
+	{
+		"op" : "replace" ,
+		"path" : "/spec/template/spec/containers" ,
+		"value" : [
+			{
+				"name": "patch-op",
+				"image": "registry.devops.rivtower.com/cita-cloud/cloud-op",
+				"command": [
+					"sleep",
+					"infinity"
+				],
+				"imagePullPolicy": "Always",
+				"volumeMounts": [
+					{
+						"mountPath": "/data",
+						"name": "datadir"
+					},
+					{
+						"mountPath": "/etc/cita-cloud/config",
+						"name": "node-config"
+					},
+					{
+						"mountPath": "/mnt",
+						"name": "node-account"
+					}
+				],
+				"workingDir": "/data"
+			}
+		]
+	}
+]'
 ```
-- 如果你想将备份保存至对象存储，需要提供对象存储的访问凭证，可以使用如下命令进行创建：
-```shell
-python script/v2/prepare.py create_minio_credentials --name minio-credentials --access_key minio --secret_key minio123
+
+待节点重启完成后，执行回滚操作。
+
+```bash
+kubectl exec -n $NAME_SPACE -it sla-overlord-node4-0 -c patch-op -- cloud-op rollback -c /etc/cita-cloud/config/config.toml -n /data 240000
+```
+
+恢复节点
+
+```bash
+kubectl rollout undo -n $NAME_SPACE sts sla-overlord-node4
 ```
 
 ### 备份节点数据
 
-- v1 
-    ```bash
-    python3 ./script/v1/backup.py -n node4
-    ```
-- v2
-    ```bash
-    # 对node0节点做本地全备
-    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type local
-  
-    # 对node0节点做本地全备（提供已存在的pvc）
-    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
-    
-    # 对node0节点做远程全备（备份至Minio）
-    python script/v2/backup.py -n node0 --backup_type full-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
-    ```
-  
+创建存放备份数据的`PVC`。如果之前已经创建过则跳过该步骤。
+
+```bash
+cat << EOF > backup_pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backup
+spec:
+  storageClassName: local-path
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10G
+EOF
+
+kubectl apply -n $NAME_SPACE -f backup_pvc.yaml
+```
+
+替换节点容器镜像为`cloud-op`，并增加挂载备份`PVC`。
+
+```bash
+kubectl patch sts sla-overlord-node4 -n $NAME_SPACE --type json --patch '
+[
+	{
+		"op" : "replace" ,
+		"path" : "/spec/template/spec/containers" ,
+		"value" : [
+			{
+				"name": "patch-op",
+				"image": "registry.devops.rivtower.com/cita-cloud/cloud-op",
+				"command": [
+					"sleep",
+					"infinity"
+				],
+				"imagePullPolicy": "Always",
+				"volumeMounts": [
+					{
+						"mountPath": "/data",
+						"name": "datadir"
+					},
+					{
+						"mountPath": "/etc/cita-cloud/config",
+						"name": "node-config"
+					},
+					{
+						"mountPath": "/mnt",
+						"name": "node-account"
+					},
+					{
+						"mountPath": "/backup",
+						"name": "backup"
+					}
+				],
+				"workingDir": "/data"
+			}
+		]
+	},
+	{
+		"op" : "add" ,
+		"path" : "/spec/template/spec/volumes/-" ,
+		"value" : {
+			"name": "backup",
+			"persistentVolumeClaim": {
+				"claimName": "backup"
+			}
+		}
+	}
+]'
+```
+
+待节点重启完成后，执行备份操作。
+
+```bash
+# 拷贝的方式进行备份
+kubectl exec -n $NAME_SPACE -it sla-overlord-node4-0 -c patch-op -- cloud-op backup -c /etc/cita-cloud/config/config.toml -p /backup -n /data 250000
+
+# 或者
+# 导出导入的方式进行备份
+# 支持对一段高度区间的导出，所以可以做增量备份，但是必须保证按照高度增长顺序且区间连续无空缺
+kubectl exec -n $NAME_SPACE -it sla-overlord-node4-0 -c patch-op -- cloud-op export -c /etc/cita-cloud/config/config.toml -p /backup/export -n /data -b 0 -e 250000
+```
+
+恢复节点
+
+```bash
+kubectl rollout undo -n $NAME_SPACE sts sla-overlord-node4
+```
 
 ### 从备份恢复节点数据
 
-- v1
-  ```bash
-  python3 ./script/v1/restore.py -n node0 -m backup
-  ```
-- v2
-  ```shell
-  # 对node0节点做本地恢复
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local
-  
-  # 对node0节点做本地恢复（提供已存在的pvc）
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
-  
-  # 对node0节点进行恢复（从Minio恢复）
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
-  ```
+停止要恢复的节点
 
-### 消块
+```bash
+kubectl scale sts sla-overlord-node4 -n $NAME_SPACE --replicas=0
+```
 
-- v1
-  ```bash
-  python3 ./script/v1/block_height_fallback.py -n node0 -b 100
-  ```
-  
-- v2
-  ```shell
-  python3 ./script/v2/block_height_fallback.py -n node0 -b 100
-  ```
+创建临时`pod`从备份恢复节点数据。
+```bash
+kubectl run restore -n cita --overrides='
+{
+  "spec": {
+    "containers": [
+      {
+        "name": "restore",
+        "image": "busybox",
+        "command": ["/bin/sh"],
+        "args": ["-c", "rm -rf /data/chain_data; rm -rf /data/data; cp -af /backup/250000/chain_data /data; cp -af /backup/250000/data /data"],
+        "volumeMounts": [
+          {
+            "mountPath": "/backup",
+            "name": "backup"
+          },
+          {
+            "mountPath": "/data",
+            "name": "data"
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "backup",
+        "persistentVolumeClaim": {
+        "claimName": "backup"
+        }
+      },
+      {
+        "name": "data",
+        "persistentVolumeClaim": {
+        "claimName": "datadir-sla-overlord-node4-0"
+        }
+      }
+    ]
+  }
+}
+'  --image=busybox --restart=Never
+```
 
-### 快照
+恢复其实就是简单的文件拷贝，需要注意：
 
-- v1
-  ```bash
-  python3 ./script/v1/snapshot.py -n node4 -b 200
-  ```
-  
-- v2
-  
-  **v2版本的快照称之为状态备份，与备份CRD做在一起，并通过backup_type进行区分**
-  ```bash
-  # 对node0节点做本地全备
-  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type local --block_height 50
-  
-  # 对node0节点做本地全备（提供已存在的pvc）
-  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type local-with-pvc --block_height 50 --pvc local-pvc --mount_path /bak/node0
-  
-  # 对node0节点做远程全备（备份至Minio）
-  python script/v2/backup.py -n node0 --backup_type state-backup --backend_type s3 --block_height 50 --endpoint 192.168.10.120:30289 --bucket_name sla
-  ```
+1. `backup`子命令备份的时候会自动添加以备份高度命名的子文件夹，因此这里使用的路径是`/backup/250000/`。
+2. `export`子命令导出不会添加子文件夹，因此要用导出的数据进行恢复的话，这里的路径应该是`/backup/export/`。
+3. 注意文件的权限，防止恢复之后节点没有权限读取而启动失败，必要时可以手工更改一下。 
 
-### 从快照恢复节点数据
+等待命令执行完成，删除临时`pod`并恢复节点
 
-- v1
-  ```bash
-  python3 ./script/v1/restore.py -n node0 -m snapshot
-  ```
-- v2
-  ```bash
-  # 对node0节点做本地恢复
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local
-  
-  # 对node0节点做本地恢复（提供已存在的pvc）
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type local-with-pvc --pvc local-pvc --mount_path /bak/node0
-  
-  # 对node0节点进行恢复（从Minio恢复）
-  python script/v2/restore.py -n node0 --backup_name test-chain-zenoh-overlord-backup --backend_type s3 --endpoint 192.168.10.120:30289 --bucket_name sla
-  ```
-
-### 守护节点切换
-
-- v1
-  ```bash
-  python3 ./script/v1/switchover.py -s node0 -d node4
-  ```
-
-- v2
-  ```bash
-  python3 ./script/v2/switchover.py -s node0 -d node4
-  ```
+```bash
+kubectl delete pod restore -n $NAME_SPACE
+kubectl scale sts sla-overlord-node4 -n $NAME_SPACE --replicas=1
+```
 
 ### 节点操作
 
@@ -402,11 +457,11 @@ kubectl delete pvc -n $NAME_SPACE datadir-${CHAIN_NAME}-node5-0
 docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config delete-k8s --chain-name $CHAIN_NAME --domain node5
 
 # 更新所有节点配置的yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --requests-cpu 120m --limits-cpu 1 --requests-memory 240Mi --limits-memory 2Gi --domain node4
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node4
 ```
 
 重新部署所有节点
