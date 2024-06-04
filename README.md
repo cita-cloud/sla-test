@@ -10,6 +10,10 @@
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 * [cloud-cli](https://github.com/cita-cloud/cloud-cli)
 
+```
+pip install toml
+```
+
 ## 部署
 
 当前版本为v6.7.3。
