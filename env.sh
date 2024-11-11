@@ -25,15 +25,15 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.3
+export RELEASE_VERSION=v6.7.4-beta1
 
 # 设置链的共识类型和链的名称
 # raft or overlord
-export CHIAN_TYPE=raft
+export CHIAN_TYPE=overlord
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class和PVC access mode
-export SC=csi-disk
+export SC=cstor-csi-disk-ssd-sc
 export PVC_MODE=ReadWriteOnce
 
 # 设置要使用的NameSpace

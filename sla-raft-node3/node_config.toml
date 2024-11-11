@@ -13,6 +13,10 @@ root = ""
 secret_access_key = ""
 service_type = ""
 
+[exporter]
+base_path = ""
+chain_name = "sla-raft"
+
 [grpc_ports]
 consensus_port = 50001
 controller_port = 50004
