@@ -45,12 +45,12 @@ data:
     validator_address = "/mnt/validator_address"
 
     [[network_zenoh.modules]]
-    hostname = "127.0.0.1"
+    hostname = "localhost"
     module_name = "consensus"
     port = 50001
 
     [[network_zenoh.modules]]
-    hostname = "127.0.0.1"
+    hostname = "localhost"
     module_name = "controller"
     port = 50004
 
@@ -108,6 +108,10 @@ data:
     root = ""
     secret_access_key = ""
     service_type = ""
+
+    [storage_opendal.exporter]
+    base_path = ""
+    chain_name = "sla-raft"
 
     [storage_opendal.log_config]
     filter = "info"

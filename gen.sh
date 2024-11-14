@@ -27,6 +27,10 @@ then
         EXTRA_ARGS="$EXTRA_ARGS --s3-region $S3_REGION"
     fi
 fi
+if [ $EXPORTER_PATH ]
+then
+    EXTRA_ARGS="$EXTRA_ARGS --exporter-path $EXPORTER_PATH"
+fi
 
 if [ $CHIAN_TYPE == "overlord" ]
 then

@@ -42,6 +42,7 @@ unset S3_BUCKET_NAME
 unset S3_REGION
 unset S3_ROOT
 unset SERVICE_TYPE
+unset EXPORTER_PATH
 
 # 设置镜像仓库
 # export DOCKER_REGISTRY=docker.io
@@ -80,6 +81,10 @@ export S3_REGION=
 export S3_ROOT=
 # s3/oss(aliyun)/obs(huawei)/cos(tencent)/azblob(azure)
 export SERVICE_TYPE=
+
+# 设置export 到 kafka的相关设置
+# 设置kafka-bridge的base url，例如：http://my-bridge-bridge-service.kafka.svc.cluster.local:8080
+export EXPORTER_PATH=
 ```
 
 生成配置文件：
@@ -323,7 +328,7 @@ kubectl scale sts sla-overlord-node4 -n $NAME_SPACE --replicas=0
 
 创建临时`pod`从备份恢复节点数据。
 ```bash
-kubectl run restore -n cita --overrides='
+kubectl run restore -n $NAME_SPACE --overrides='
 {
   "spec": {
     "containers": [
@@ -386,25 +391,15 @@ kubectl scale sts sla-overlord-node4 -n $NAME_SPACE --replicas=1
 cp $CHAIN_NAME-node0/ca_cert/key.pem $CHAIN_NAME/ca_cert/
 
 # 增加一个只读节点的配置
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config append-k8s --chain-name $CHAIN_NAME --node localhost:40005:node5:k8s
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config append --chain-name $CHAIN_NAME --node localhost:40005:node5:k8s:$NAME_SPACE
 
-# 更新所有节点配置的yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node4
+# 更新node5节点配置的yaml文件
 docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node5
 ```
 
-重新部署所有节点
+部署node5节点
 
 ```bash
-kubectl apply -f $CHAIN_NAME-node0/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node1/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node2/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node3/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node4/yamls/ -n $NAME_SPACE
 kubectl apply -f $CHAIN_NAME-node5/yamls/ -n $NAME_SPACE
 ```
 
@@ -458,27 +453,8 @@ kubectl delete pvc -n $NAME_SPACE datadir-${CHAIN_NAME}-node5-0
 此时，其他节点中还存在着node5的节点信息，需要从链的配置中删除node5
 
 ```bash
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config delete-k8s --chain-name $CHAIN_NAME --domain node5
-
-# 更新所有节点配置的yaml文件
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node0
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node1
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node2
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node3
-docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config update-yaml --chain-name $CHAIN_NAME --storage-class $SC --docker-registry $DOCKER_REGISTRY --docker-repo $DOCKER_REPO --domain node4
+docker run -it --rm -v $(pwd):/data -w /data $DOCKER_REGISTRY/$DOCKER_REPO/cloud-config:$RELEASE_VERSION cloud-config delete --chain-name $CHAIN_NAME --domain node5
 ```
-
-重新部署所有节点
-
-```bash
-kubectl apply -f $CHAIN_NAME-node0/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node1/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node2/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node3/yamls/ -n $NAME_SPACE
-kubectl apply -f $CHAIN_NAME-node4/yamls/ -n $NAME_SPACE
-```
-
-等待网络配置文件变更生效，其他节点中就不存在node5的节点信息了。
 
 ### 存储扩容
 

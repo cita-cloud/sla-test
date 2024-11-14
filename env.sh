@@ -16,6 +16,7 @@ unset S3_BUCKET_NAME
 unset S3_REGION
 unset S3_ROOT
 unset SERVICE_TYPE
+unset EXPORTER_PATH
 
 # 设置镜像仓库
 # export DOCKER_REGISTRY=docker.io
@@ -24,7 +25,7 @@ export DOCKER_REGISTRY=registry.devops.rivtower.com
 export DOCKER_REPO=cita-cloud
 
 # 设置链的版本
-export RELEASE_VERSION=v6.7.3
+export RELEASE_VERSION=v6.7.4
 
 # 设置链的共识类型和链的名称
 # raft or overlord
@@ -32,7 +33,7 @@ export CHIAN_TYPE=raft
 export CHAIN_NAME=sla-$CHIAN_TYPE
 
 # 设置基础环境的Storage Class和PVC access mode
-export SC=csi-disk
+export SC=cstor-csi-disk-ssd-sc
 export PVC_MODE=ReadWriteOnce
 
 # 设置要使用的NameSpace
@@ -55,3 +56,6 @@ export S3_ROOT=
 # s3/oss(aliyun)/obs(huawei)/cos(tencent)/azblob(azure)
 export SERVICE_TYPE=
 
+# 设置export 到 kafka的相关设置
+# 设置kafka-bridge的base url，例如：http://my-bridge-bridge-service.kafka.svc.cluster.local:8080
+export EXPORTER_PATH=

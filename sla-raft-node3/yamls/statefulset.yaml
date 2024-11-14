@@ -36,13 +36,13 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.3
+        image: registry.devops.rivtower.com/cita-cloud/network_zenoh:v6.7.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
             - grpc-health-probe
-            - -addr=127.0.0.1:50000
+            - -addr=localhost:50000
           initialDelaySeconds: 30
           periodSeconds: 10
         name: network
@@ -76,13 +76,13 @@ spec:
         - -c
         - /etc/cita-cloud/config/config.toml
         - --stdout
-        image: registry.devops.rivtower.com/cita-cloud/consensus_raft:v6.7.3
+        image: registry.devops.rivtower.com/cita-cloud/consensus_raft:v6.7.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
             - grpc-health-probe
-            - -addr=127.0.0.1:50001
+            - -addr=localhost:50001
           initialDelaySeconds: 30
           periodSeconds: 10
         name: consensus
@@ -112,13 +112,13 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.3
+        image: registry.devops.rivtower.com/cita-cloud/executor_evm:v6.7.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
             - grpc-health-probe
-            - -addr=127.0.0.1:50002
+            - -addr=localhost:50002
           initialDelaySeconds: 30
           periodSeconds: 10
         name: executor
@@ -146,13 +146,13 @@ spec:
         - run
         - -c
         - /etc/cita-cloud/config/config.toml
-        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.3
+        image: registry.devops.rivtower.com/cita-cloud/storage_opendal:v6.7.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
             - grpc-health-probe
-            - -addr=127.0.0.1:50003
+            - -addr=localhost:50003
           initialDelaySeconds: 30
           periodSeconds: 10
         name: storage
@@ -182,13 +182,13 @@ spec:
         - /etc/cita-cloud/config/config.toml
         - -p
         - /mnt/private_key
-        image: registry.devops.rivtower.com/cita-cloud/controller_hsm:v6.7.3
+        image: registry.devops.rivtower.com/cita-cloud/controller_hsm:v6.7.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
             command:
             - grpc-health-probe
-            - -addr=127.0.0.1:50004
+            - -addr=localhost:50004
           initialDelaySeconds: 60
           periodSeconds: 10
         name: controller
@@ -238,4 +238,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: csi-disk
+      storageClassName: cstor-csi-disk-ssd-sc
